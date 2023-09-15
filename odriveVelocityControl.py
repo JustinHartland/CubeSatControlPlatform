@@ -48,7 +48,7 @@ my_drive.axis0.controller.input_vel = 1
 # Some more things you can try:
 
 # Write to a read-only property:
-my_drive.vbus_voltage = 11.0  # fails with `AttributeError: can't set attribute`
+#my_drive.vbus_voltage = 11.0  # fails with `AttributeError: can't set attribute`
 
 # Assign an incompatible value:
-my_drive.motor0.pos_setpoint = "I like trains"  # fails with `ValueError: could not convert string to float`
+#my_drive.motor0.pos_setpoint = "I like trains"  # fails with `ValueError: could not convert string to float`
