@@ -1,6 +1,8 @@
+import time
 import board
 import busio
 import adafruit_lsm9ds1
+import RPi.GPIO as GPIO
 
 # Initialize I2C bus
 i2c = busio.I2C(board.SCL, board.SDA)
