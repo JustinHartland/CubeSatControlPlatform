@@ -4,10 +4,10 @@ import busio
 import adafruit_lsm9ds1
 
 # Initialize I2C bus
-i2c = busio.I2C(board.SCL, board.SDA)
+i2c = busio.I2C()
 
 # Initialize LSM9DS1 sensor
-sensor = adafruit_lsm9ds1.LSM9DS1(i2c)
+sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
 while True:
     # Read accelerometer, gyroscope, and magnetometer data
