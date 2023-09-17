@@ -2,6 +2,8 @@ import math
 import time
 import board
 import busio
+import scipy
+import numpy
 from adafruit_lsm9ds1 import LSM9DS1
 from pyquaternion import Quaternion
 
