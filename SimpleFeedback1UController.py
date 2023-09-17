@@ -21,8 +21,8 @@ while True:
     yaw = 180 * (gyro_z / 32767.0)  # Convert gyroscope data to degrees
 
     # Print the Euler angles
-    print("Roll: {:.2f} degrees".format(roll))
-    #print("Pitch: {:.2f} degrees".format(pitch))
+    #print("Roll: {:.2f} degrees".format(roll))
+    print("Pitch: {:.2f} degrees".format(pitch))
     #print("Yaw: {:.2f} degrees".format(yaw))
 
     # Delay for a short time before the next reading
