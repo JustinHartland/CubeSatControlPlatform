@@ -21,6 +21,7 @@ while True:
     # Calculate pitch and roll angles using accelerometer data
     pitch = math.degrees(math.atan2(accel_x, math.sqrt(accel_y**2 + accel_z**2)))
     roll = math.degrees(math.atan2(accel_y, math.sqrt(accel_x**2 + accel_z**2)))
+    yaw = math.degrees(math.atan2(mag_y, mag_x))
 
     # Create a rotation matrix using the calculated pitch and roll
     rotation_matrix = R.from_euler('zyx', [yaw, pitch, roll], degrees=True).as_matrix()
