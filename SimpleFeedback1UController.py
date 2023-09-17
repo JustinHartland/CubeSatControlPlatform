@@ -2,15 +2,15 @@ import math
 import time
 import board
 import busio
-from adafruit_lsm9ds1 import LSM9DS1
+import adafruit_lsm9ds1
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 # Initialize I2C bus
-i2c = busio.I2C(board.SCL, board.SDA)
+i2c = board.I2C()
 
 # Initialize LSM9DS1 sensor
-sensor = LSM9DS1(i2c)
+sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
 while True:
     # Read accelerometer, gyroscope, and magnetometer data
