@@ -22,8 +22,8 @@ while True:
 
     # Print the Euler angles
     print("Roll: {:.2f} degrees".format(roll))
-    print("Pitch: {:.2f} degrees".format(pitch))
-    print("Yaw: {:.2f} degrees".format(yaw))
+    #print("Pitch: {:.2f} degrees".format(pitch))
+    #print("Yaw: {:.2f} degrees".format(yaw))
 
     # Delay for a short time before the next reading
     time.sleep(0.1)
