@@ -28,9 +28,9 @@ while True:
     yaw = math.atan2(mag_y2, mag_x3)
 
     # Print the Euler angles
-    print("\nRoll: {:.2f} degrees".format(roll))
-    print("Pitch: {:.2f} degrees".format(pitch))
-    print("Yaw: {:.2f} degrees".format(yaw))
+    print("\nRoll: {:.2f} degrees".format(roll * 180 / math.pi))
+    print("Pitch: {:.2f} degrees".format(pitch * 180 / math.pi))
+    print("Yaw: {:.2f} degrees".format(yaw * 180/ math.pi))
 
     # Delay for a short time before the next reading
     time.sleep(0.5)
