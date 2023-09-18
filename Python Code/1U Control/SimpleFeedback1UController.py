@@ -49,8 +49,8 @@ def calibrate(num_samples=1000, delay_time=0.01):
     return avg_accel, avg_gyro, avg_magnet
 
 # Using the AHRS library, you can directly obtain Euler angles from the Madgwick filter output
-def quaternion_to_euler(Q):
-    return madgwick_filter.quaternion.to_euler()
+#def quaternion_to_euler(Q):
+#    return madgwick_filter.quaternion.to_euler()
 
 # Perform calibration
 accel_bias, gyro_bias, magnet_bias = calibrate()
@@ -79,8 +79,8 @@ while True:
     Q[currentSample] = madgwick_filter.updateIMU(Q[currentSample-1], [gx, gy, gz], [ax, ay, az])
 
     # Get the Euler angles from the quaternion
-    roll, pitch, yaw = quaternion_to_euler(Q[currentSample])
+    #roll, pitch, yaw = quaternion_to_euler(Q[currentSample])
 
-    print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
+    #print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
     
     time.sleep(0.01)  # Adjust as needed
