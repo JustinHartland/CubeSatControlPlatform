@@ -2,33 +2,38 @@ import time
 import board
 import busio
 import adafruit_lsm9ds1
-from ahrs.filters import Madgwick
-import numpy as np
+import math
 
 # Setup I2C connection
-i2c = board.I2C()
+i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
-# Create the Madgwick filter object
-madgwick = Madgwick()
+def compute_angles(ax, ay, az, mx, my, mz):
+    # Calculate the roll angle (rotation around the y-axis)
+    roll = math.atan2(ay, math.sqrt(ax**2 + az**2))
+    
+    # Calculate the pitch angle (rotation around the x-axis)
+    pitch = math.atan2(-ax, math.sqrt(ay**2 + az**2))
+    
+    # Calculate the yaw angle (rotation around the z-axis)
+    yaw = math.atan2(my * math.cos(roll) - mz * math.sin(roll),
+                     mx * math.cos(pitch) + my * math.sin(pitch) * math.sin(roll) + mz * math.sin(pitch) * math.cos(roll))
+    
+    # Convert from radians to degrees
+    roll = math.degrees(roll)
+    pitch = math.degrees(pitch)
+    yaw = math.degrees(yaw)  # Convert yaw to degrees
+    
+    return roll, pitch, yaw
 
 while True:
-    t += 1
-
-    # Get accelerometer, gyroscope, and magnetometer data
+    # Get accelerometer, magnetometer data
     ax, ay, az = sensor.acceleration
-    gx, gy, gz = sensor.gyro
     mx, my, mz = sensor.magnetic
+    
+    # Compute roll, pitch, and yaw from the sensor data
+    roll, pitch, yaw = compute_angles(ax, ay, az, mx, my, mz)
 
-    # Update the filter with the new data
-    madgwick.updateIMU(np.array([gx, gy, gz]), np.array([ax, ay, az]), np.array([mx, my, mz]))
-
-    # The orientation is directly available as a quaternion
-    q = madgwick.quaternion
-
-    # Convert quaternion to Euler angles
-    euler = q.to_euler(degrees=True)  # Convert to Euler angles in degrees
-
-    print(f"Roll: {euler[0]:.2f}, Pitch: {euler[1]:.2f}, Yaw: {euler[2]:.2f}")
-
+    print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
+    
     time.sleep(0.01)  # Adjust as needed
