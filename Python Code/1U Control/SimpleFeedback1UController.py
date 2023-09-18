@@ -12,13 +12,6 @@ sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 # Create the Madgwick filter object
 madgwick = Madgwick()
 
-#Allocation for quaternions
-Q = np.zeros((1, 4))
-t = 1
-
-#Initial attitude quaternion
-Q[0] = [1, 0, 0, 0]
-
 while True:
     t += 1
 
@@ -28,7 +21,7 @@ while True:
     mx, my, mz = sensor.magnetic
 
     # Update the filter with the new data
-    madgwick = Madgwick(np.array([gx, gy, gz]), np.array([ax, ay, az]), np.array([mx, my, mz]))
+    madgwick.updateIMU(np.array([gx, gy, gz]), np.array([ax, ay, az]), np.array([mx, my, mz]))
 
     # The orientation is directly available as a quaternion
     q = madgwick.quaternion
