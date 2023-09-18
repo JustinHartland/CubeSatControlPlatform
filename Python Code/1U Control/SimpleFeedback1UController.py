@@ -28,7 +28,7 @@ while True:
     mx, my, mz = sensor.magnetic
 
     # Update the filter with the new data
-    madgwick = updateIMU(Q[t - 1], np.array([gx, gy, gz]), np.array([ax, ay, az]), np.array([mx, my, mz]))
+    madgwick.updateIMU(Q[t - 1], np.array([gx, gy, gz]), np.array([ax, ay, az]), np.array([mx, my, mz]))
 
     # The orientation is directly available as a quaternion
     q = madgwick.quaternion
