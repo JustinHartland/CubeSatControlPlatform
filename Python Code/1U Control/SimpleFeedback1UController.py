@@ -10,7 +10,8 @@ from ahrs.filters import Madgwick
 i2c = board.I2C()
 sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
-sample = 1
+currentSample = 0
+sample = 10000
 Q = np.tile([1., 0., 0., 0.], (sample, 1)) # Allocate for quaternions
 
 def calibrate(num_samples=1000, delay_time=0.01):
@@ -54,7 +55,7 @@ accel_bias, gyro_bias, magnet_bias = calibrate()
 madgwick_filter = Madgwick(sensor.gyro, sensor.acceleration, q0 = [1, 0, 0, 0])
 
 while True:
-    sample += 1
+    currentSample += 1
 
     ax, ay, az = sensor.acceleration
     gx, gy, gz = sensor.gyro
@@ -74,10 +75,10 @@ while True:
     mz -= magnet_bias[2]
 
     # Update Madgwick filter
-    Q[sample] = madgwick_filter.updateIMU(Q[sample-1], [gx, gy, gz], [ax, ay, az])
+    Q[currentSample] = madgwick_filter.updateIMU(Q[currentSample-1], [gx, gy, gz], [ax, ay, az])
 
     # Get the Euler angles from the quaternion
-    roll, pitch, yaw = quaternion_to_euler(Q[sample])
+    roll, pitch, yaw = quaternion_to_euler(Q[currentSample])
 
     print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
     
