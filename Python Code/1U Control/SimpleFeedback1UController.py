@@ -70,6 +70,14 @@ def quaternion_to_euler(w, x, y, z):
 
     return roll_x, pitch_y, yaw_z  # in radian
 
+def radians_to_degrees(roll_rad, pitch_rad, yaw_rad):
+    
+    roll_deg = roll_rad * 180 / math.pi
+    pitch_deg = pitch_rad * 180 / math.pi
+    yaw_deg = yaw_rad * 180 / math.pi
+
+    return roll_deg, pitch_deg, yaw_deg
+
 # Perform calibration
 accel_bias, gyro_bias, magnet_bias = calibrate()
 
@@ -97,8 +105,9 @@ while True:
     Q[currentSample] = madgwick_filter.updateIMU(Q[currentSample-1], [gx, gy, gz], [ax, ay, az])
 
     # Get the Euler angles from the quaternion
-    roll, pitch, yaw = quaternion_to_euler(Q[currentSample, 0], Q[currentSample, 1], Q[currentSample, 2], Q[currentSample, 3])
+    roll_rad, pitch_rad, yaw_rad = quaternion_to_euler(Q[currentSample, 0], Q[currentSample, 1], Q[currentSample, 2], Q[currentSample, 3])
+    roll_deg, pitch_deg, yaw_deg = radians_to_degrees(roll_rad, pitch_rad, yaw_rad)
 
-    print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
+    print(f"Roll: {roll_deg:.2f}, Pitch: {pitch_deg:.2f}, Yaw: {yaw_deg:.2f}")
     
     time.sleep(0.01)  # Adjust as needed
