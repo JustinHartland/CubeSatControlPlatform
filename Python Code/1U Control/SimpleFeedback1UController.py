@@ -10,9 +10,6 @@ from ahrs.filters import Madgwick
 i2c = board.I2C()
 sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
-#Initialize madgwick filter
-madgwick_filter = Madgwick()
-
 sample = 1
 Q = np.tile([1., 0., 0., 0.], (sample, 1)) # Allocate for quaternions
 
@@ -52,6 +49,9 @@ def quaternion_to_euler(Q):
 
 # Perform calibration
 accel_bias, gyro_bias, magnet_bias = calibrate()
+
+#Initialize madgwick filter
+madgwick_filter = Madgwick(sensor.gyro, sensor.acceleration, q0 = [1, 0, 0, 0])
 
 while True:
     sample += 1
