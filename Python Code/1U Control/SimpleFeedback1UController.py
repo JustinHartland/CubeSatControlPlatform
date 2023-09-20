@@ -26,7 +26,7 @@ def calibrate(num_samples=1000, delay_time=0.01):
 
     for i in range(num_samples):
         ax, ay, az = sensor.acceleration
-        gx, gy, gz = sensor.gyro * (2*math.pi)
+        gx, gy, gz = sensor.gyro 
         mx, my, mz = sensor.magnetic
 
         sum_accel[0] += ax
@@ -85,7 +85,7 @@ while True:
     currentSample += 1
 
     ax, ay, az = sensor.acceleration
-    gx, gy, gz = sensor.gyro * 2 * math.pi
+    gx, gy, gz = sensor.gyro
     mx, my, mz = sensor.magnetic
 
     # Offset the biases
@@ -96,6 +96,10 @@ while True:
     gx -= gyro_bias[0]
     gy -= gyro_bias[1]
     gz -= gyro_bias[2]
+
+    gx = gx * (2*math.pi)
+    gy = gy * (2*math.pi)
+    gz = gz * (2*math.pi)
     
     mx -= magnet_bias[0]
     my -= magnet_bias[1]
