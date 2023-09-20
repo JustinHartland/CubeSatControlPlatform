@@ -26,7 +26,7 @@ def calibrate(num_samples=1000, delay_time=0.01):
 
     for i in range(num_samples):
         ax, ay, az = sensor.acceleration
-        gx, gy, gz = sensor.gyro
+        gx, gy, gz = sensor.gyro * (2*math.pi)
         mx, my, mz = sensor.magnetic
 
         sum_accel[0] += ax
@@ -85,7 +85,7 @@ while True:
     currentSample += 1
 
     ax, ay, az = sensor.acceleration
-    gx, gy, gz = sensor.gyro
+    gx, gy, gz = sensor.gyro * 2 * math.pi
     mx, my, mz = sensor.magnetic
 
     # Offset the biases
@@ -113,4 +113,4 @@ while True:
 
     print(f"Roll: {roll_deg:.2f}, Pitch: {pitch_deg:.2f}, Yaw: {yaw_deg:.2f}")
     
-    time.sleep(0.01)  # Adjust as needed
+    time.sleep(0.02)  # Adjust as needed
