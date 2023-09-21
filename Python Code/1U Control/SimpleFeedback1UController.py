@@ -111,7 +111,7 @@ while True:
     mz -= magnet_bias[2]
 
     # Update Madgwick filter
-    Q[currentSample] = madgwick_filter.update([gx, gy, gz], [ax, ay, az], [mx, my, mz])
+    Q[currentSample] = madgwick_filter.updateMARG(Q[currentSample-1], [gx, gy, gz], [ax, ay, az], [mx, my, mz])
 
     # Get the Euler angles from the quaternion
     roll_rad, pitch_rad, yaw_rad = quaternion_to_euler(Q[currentSample, 0], Q[currentSample, 1], Q[currentSample, 2], Q[currentSample, 3])
