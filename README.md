@@ -1,15 +1,17 @@
-# CubeSat Reaction Wheel Attitude Control Platform
-
 <div align="center">
-  <img src="https://app.gemoo.com/share/image-annotation/563501152249483264?codeId=PY48gJ5BlLbmL&origin=imageurlgenerator" alt="CubeSat Platform" width="300"/>
-  &nbsp; &nbsp; &nbsp;
+
+<h1>CubeSat Reaction Wheel Attitude Control Platform</h1>
+
 </div>
 
+<div align="center">
+    <img src="./Images/CubeSatInGimbalRings.jpg" alt="CubeSat in Gimbal Rings" width="300"/>
+</div>
 ---
 
 ## 📄 Abstract
 
-In the classroom, learning the concepts behind spacecraft attitude dynamics and control is abstract and intensive. It is common that students struggle to develop the connection between the math they are learning and visualizing how it can be applied to the real-wrold. The purpose of this project is to design and manufacture a 1U, 3U, 6U CubeSat testbed for autonomous control systems utilizing reaction wheels. The testbed will include three separate reaction wheels each mounted on its own respected axis of the rotation plane to control the attitude in 3 degrees of freedom. The end goal of the CubeSat testbed is to be integrated into a website where anyone online can upload their own controls algorithm and watch a live stream of how their algorithm performs on hardware in real-time. Additionally, there will be a guided tutorial included in the website to help students learn spacecraft controls.
+In the classroom, learning the concepts behind spacecraft attitude dynamics and controls is abstract and intensive. It is common that students struggle to develop the connection between the math they are learning and visualizing how it can be applied to the real-wrold. The purpose of this project is to design and manufacture a 1U, 3U, 6U CubeSat testbed for autonomous control systems utilizing reaction wheels. The testbed will include three separate reaction wheels each mounted on its own respected axis of the rotation plane to control the attitude in 3 degrees of freedom. The end goal of the CubeSat testbed is to be integrated into a website where anyone online can upload their own controls algorithm and watch a live stream of how their algorithm performs on hardware in real-time. Additionally, there will be a guided tutorial included in the website to help students learn spacecraft controls.
 
 ---
 
