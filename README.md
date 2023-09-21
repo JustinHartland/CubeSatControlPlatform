@@ -1,8 +1,7 @@
 # CubeSat Reaction Wheel Attitude Control Platform
 
 <div align="center">
-  <img src="https://app.gemoo.com/share/image-annotation/563501152249483264?codeId=PY48gJ5BlLbmL&origin=imageurlgenerator" alt="CubeSat Platform" width="300"/>
-  &nbsp; &nbsp; &nbsp;
+    <img src="./Images/CubeSatInGimbalRings.jpg" alt="CubeSat in Gimbal Rings" width="300"/>
 </div>
 
 ---
