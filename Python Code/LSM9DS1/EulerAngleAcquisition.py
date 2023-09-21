@@ -30,9 +30,9 @@ def calibrate(num_samples=1000, delay_time=0.01):
         ax, ay, az = sensor.acceleration
         gx, gy, gz = sensor.gyro 
 
-        gx = gx * math.pi
-        gy = gy * math.pi
-        gz = gz * math.pi
+        #gx = gx * math.pi
+        #gy = gy * math.pi
+        #gz = gz * math.pi
 
         mx, my, mz = sensor.magnetic
 
@@ -94,12 +94,9 @@ while True:
     ax, ay, az = sensor.acceleration
     gx, gy, gz = sensor.gyro
 
-    print(f"Roll: {gx:.2f}, Pitch: {gy:.2f}, Yaw: {gz:.2f}")
-    
-
-    gx = gx *math.pi
-    gy = gy *math.pi
-    gz = gz *math.pi
+    #gx = gx *math.pi
+    #gy = gy *math.pi
+    #gz = gz *math.pi
     
     mx, my, mz = sensor.magnetic
 
@@ -121,8 +118,8 @@ while True:
 
     # Get the Euler angles from the quaternion
     roll_rad, pitch_rad, yaw_rad = quaternion_to_euler(Q[currentSample, 0], Q[currentSample, 1], Q[currentSample, 2], Q[currentSample, 3])
-    roll_deg, pitch_deg, yaw_deg = radians_to_degrees(roll_rad, pitch_rad, yaw_rad)
+    #roll_deg, pitch_deg, yaw_deg = radians_to_degrees(roll_rad, pitch_rad, yaw_rad)
 
-    #print(f"Roll: {roll_deg:.2f}, Pitch: {pitch_deg:.2f}, Yaw: {yaw_deg:.2f}")
+    print(f"Roll: {roll_rad:.2f}, Pitch: {pitch_rad:.2f}, Yaw: {yaw_rad:.2f}")
     
     time.sleep(0.025)  # Adjust as needed
