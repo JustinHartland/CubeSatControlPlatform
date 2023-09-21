@@ -3,7 +3,6 @@
 <div align="center">
     <img src="./Images/CubeSatInGimbalRings.jpg" alt="CubeSat in Gimbal Rings" width="300"/>
 </div>
-
 ---
 
 ## 📄 Abstract
