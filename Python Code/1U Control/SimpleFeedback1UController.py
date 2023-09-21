@@ -27,6 +27,11 @@ def calibrate(num_samples=1000, delay_time=0.01):
     for i in range(num_samples):
         ax, ay, az = sensor.acceleration
         gx, gy, gz = sensor.gyro 
+
+        gx = gx * 2 * math.pi
+        gy = gy * 2 * math.pi
+        gz = gz * 2 * math.pi
+
         mx, my, mz = sensor.magnetic
 
         sum_accel[0] += ax
@@ -106,9 +111,6 @@ while True:
     mz -= magnet_bias[2]
 
     # Update Madgwick filter
-    #Q[currentSample] = madgwick_filter.updateIMU(Q[currentSample-1], [gx, gy, gz], [ax, ay, az], [mx, my, mz])
-
-        # Update Madgwick filter
     Q[currentSample] = madgwick_filter.update([gx, gy, gz], [ax, ay, az], [mx, my, mz])
 
     # Get the Euler angles from the quaternion
