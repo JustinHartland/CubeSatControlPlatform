@@ -1,4 +1,8 @@
-# CubeSat Reaction Wheel Attitude Control Platform
+<div align="center">
+
+<h1>CubeSat Reaction Wheel Attitude Control Platform</h1>
+
+</div>
 
 <div align="center">
     <img src="./Images/CubeSatInGimbalRings.jpg" alt="CubeSat in Gimbal Rings" width="300"/>
