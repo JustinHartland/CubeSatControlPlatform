@@ -6,8 +6,7 @@ import threading
 import time
 import board
 import busio
-from adafruit_lsm6ds import LSM6DSOX
-from adafruit_lis3mdl import LIS3MDL
+import adafruit_lsm9ds1
 
 SAMPLE_SIZE = 500
 
@@ -49,7 +48,7 @@ class KeyListener:
 
 def main():
     # pylint: disable=too-many-locals, too-many-statements
-    i2c = busio.I2C(board.SCL, board.SDA)
+    i2c = board.I2C()
 
     gyro_accel = LSM6DSOX(i2c)
     magnetometer = LIS3MDL(i2c)
