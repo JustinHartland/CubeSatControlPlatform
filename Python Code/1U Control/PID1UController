@@ -18,7 +18,8 @@ while my_drive.axis0.current_state != AXIS_STATE_IDLE:
     time.sleep(0.1)
 
 my_drive.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
-my_drive.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
+#my_drive.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
+my_drive.axis0.controller.config.control_mode = CONTROL_MODE_CURRENT_CONTROL
 
 # Initialize I2C bus and sensor
 i2c = board.I2C()
@@ -34,6 +35,9 @@ prev_Time = time.time()
 targetAngle = 0                                     #Set target orientation angle here
 pid = PID(1.0, 0.1, 0.01, setpoint = targetAngle)   #Configure PID constants, and target
 pid.output_limits = (-10, 10)                       #Set limits on velocity
+
+#Set desired current
+desiredCurrent = 1 #Amps
 
 def getOrientationAngles(currentTime, previousTime, previousAngleZ):
     # Get the current time and compute the elapsed time
