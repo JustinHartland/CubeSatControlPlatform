@@ -29,6 +29,8 @@ prev_time = time.time()
 
 #Set target angle
 targetAngle = 0
+motorVelocity = 1
+
 
 while True:
     # Get the current time and compute the elapsed time

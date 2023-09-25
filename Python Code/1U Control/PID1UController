@@ -1,0 +1,73 @@
+import time
+import board
+import busio
+import adafruit_lsm9ds1
+import odrive
+import math
+from odrive.enums import *
+from simple_pid import PID
+
+# Find a connected ODrive (this will block until you connect one)
+print("finding an odrive...")
+my_drive = odrive.find_any()
+
+# Calibrate motor and wait for it to finish
+print("starting calibration...")
+my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+while my_drive.axis0.current_state != AXIS_STATE_IDLE:
+    time.sleep(0.1)
+
+my_drive.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+my_drive.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
+
+# Initialize I2C bus and sensor
+i2c = board.I2C()
+sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
+
+# Initial angular positions
+angle_x, angle_y, angle_z = 0.0, 0.0, 0.0
+
+# Time initialization
+prev_Time = time.time()
+
+#PID Controller Setup
+targetAngle = 0                                     #Set target orientation angle here
+pid = PID(1.0, 0.1, 0.01, setpoint = targetAngle)   #Configure PID constants, and target
+pid.output_limits = (-10, 10)                       #Set limits on velocity
+
+def getOrientationAngles(currentTime, previousTime):
+    # Get the current time and compute the elapsed time
+    dt = currentTime - previousTime
+
+    # Read gyroscope values (assumed to be in degrees per second)
+    #gyro_x, gyro_y, gyro_z = sensor.gyro
+    gyro_z = sensor.gyro[2]
+
+    # Integrate gyro values to get angular positions
+    angle_z += (gyro_z * dt) * (180/math.pi) #degrees
+
+    # Print angular positions
+    print(f'Angle Z: {angle_z:.2f}')
+
+    return angle_z
+
+try:
+    while True:
+        curr_Time = time.time()
+
+        #Set control velocity
+        controlVelocity = pid(getOrientationAngles(curr_Time, prev_Time))
+
+        #Set motor velocity to control velocity
+        my_drive.axis0.controller.input_vel = controlVelocity
+
+        # Update the previous time for the next iteration
+        prev_Time = curr_Time
+
+        # Sleep for a while to reduce the update rate
+        time.sleep(0.01)
+
+except KeyboardInterrupt:
+    pass
+
+my_drive.axis0.controller.input_vel(0)
