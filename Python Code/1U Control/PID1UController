@@ -19,7 +19,8 @@ while my_drive.axis0.current_state != AXIS_STATE_IDLE:
 
 my_drive.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
 #my_drive.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
-my_drive.axis0.controller.config.control_mode = CONTROL_MODE_CURRENT_CONTROL
+my_drive.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+my_drive.axis0.motor.config.torque_constant = 8.23 / 150
 
 # Initialize I2C bus and sensor
 i2c = board.I2C()
@@ -33,11 +34,8 @@ prev_Time = time.time()
 
 #PID Controller Setup
 targetAngle = 0                                     #Set target orientation angle here
-pid = PID(-0.75, 0, 0, setpoint = targetAngle)   #Configure PID constants, and target
-pid.output_limits = (-10, 10)                       #Set limits on velocity
-
-#Set desired current
-desiredCurrent = 1 #Amps
+pid = PID(-0.5, 0, 0, setpoint = targetAngle)       #Configure PID constants, and target
+pid.output_limits = (-1, 1)                          #Set limits on torque
 
 def getOrientationAngles(currentTime, previousTime, previousAngleZ):
     # Get the current time and compute the elapsed time
@@ -61,10 +59,10 @@ try:
         angle_z = getOrientationAngles(curr_Time, prev_Time, previousAngleZ)
 
         #Set control velocity
-        controlVelocity = pid(angle_z)
+        controlTorque = pid(angle_z)
 
-        #Set motor velocity to control velocity
-        my_drive.axis0.controller.input_vel = controlVelocity
+        #Set motor current to control torque
+        my_drive.axis0.controller.input_torque = controlTorque
 
         # Update the previous time for the next iteration
         prev_Time = curr_Time
@@ -76,4 +74,5 @@ try:
 except KeyboardInterrupt:
     pass
 
+my_drive.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
 my_drive.axis0.controller.input_vel(0)
