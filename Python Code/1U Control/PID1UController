@@ -33,7 +33,7 @@ prev_Time = time.time()
 
 #PID Controller Setup
 targetAngle = 0                                     #Set target orientation angle here
-pid = PID(1.0, 0.1, 0.01, setpoint = targetAngle)   #Configure PID constants, and target
+pid = PID(-0.75, 0, 0, setpoint = targetAngle)   #Configure PID constants, and target
 pid.output_limits = (-10, 10)                       #Set limits on velocity
 
 #Set desired current
