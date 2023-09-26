@@ -18,16 +18,37 @@ while my_drive.axis0.current_state != AXIS_STATE_IDLE:
     time.sleep(0.1)
 
 my_drive.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
-#my_drive.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
 my_drive.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
-my_drive.axis0.controller.config.torque_constant = 8.23 / 150
 
 # Initialize I2C bus and sensor
 i2c = board.I2C()
 sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
-# Initial angular positions
-previousAngleZ = 0
+# Function to calibrate gyroscope
+def calibrate_gyro(num_samples=100):
+    gyro_offset_x, gyro_offset_y, gyro_offset_z = 0.0, 0.0, 0.0
+
+    print("Calibrating gyroscope...")
+    for _ in range(num_samples):
+        gyro_x, gyro_y, gyro_z = sensor.gyro
+        gyro_offset_x += gyro_x
+        gyro_offset_y += gyro_y
+        gyro_offset_z += gyro_z
+        time.sleep(0.01)  # Sleep for a while to reduce sampling rate
+
+    # Calculate average offsets
+    gyro_offset_x /= num_samples
+    gyro_offset_y /= num_samples
+    gyro_offset_z /= num_samples
+
+    print("Calibration complete")
+    return gyro_offset_x, gyro_offset_y, gyro_offset_z
+
+# Calibrate gyroscope
+gyro_offset_x, gyro_offset_y, gyro_offset_z = calibrate_gyro()
+
+# Initial angles
+roll, pitch, yaw = 0.0, 0.0, 0.0
 
 # Time initialization
 prev_Time = time.time()
@@ -38,44 +59,43 @@ pid = PID(-0.03, 0, 0, setpoint = targetAngle)       #Configure PID constants, a
 pid.output_limits = (-20, 20)                          #Set limits on torque
 
 def getOrientationAngles(currentTime, previousTime, previousAngleZ):
-    # Get the current time and compute the elapsed time
-    dt = currentTime - previousTime
-
-    # Read gyroscope values (assumed to be in degrees per second)
+    # Read gyroscope data and subtract biases
     gyro_x, gyro_y, gyro_z = sensor.gyro
+    gyro_x -= gyro_offset_x
+    gyro_y -= gyro_offset_y
+    gyro_z -= gyro_offset_z
 
-    # Integrate gyro values to get angular positions
-    angle_z = previousAngleZ + (gyro_z * dt) * (180/math.pi) #degrees
+    # Get the time difference
+    current_time = time.time()
+    dt = current_time - last_time
+    last_time = current_time
+
+    # Integrate the gyroscope data
+    roll += gyro_x * dt
+    pitch += gyro_y * dt
+    yaw += gyro_z * dt
 
     # Print angular positions
-    print(f'Angle Z: {angle_z:.2f}')
+    print(f'Yaw: {yaw:.2f}')
 
-    return angle_z
+    return yaw
 
 try:
     while True:
         curr_Time = time.time()
 
-        angle_z = getOrientationAngles(curr_Time, prev_Time, previousAngleZ)
+        yaw = getOrientationAngles()
 
         #Set control torque
-        if angle_z > -5 and angle_z < 5:
+        if yaw > -5 and yaw < 5:
             controlTorque = 0
-        elif angle_z >= 5:
-            controlTorque = pid(angle_z)
-        elif angle_z <= -5:
-            controlTorque = pid(angle_z)
+        elif yaw >= 5:
+            controlTorque = pid(yaw)
+        elif yaw <= -5:
+            controlTorque = pid(yaw)
 
         #Set motor current to control torque
         my_drive.axis0.controller.input_torque = controlTorque
-
-        # Update the previous time for the next iteration
-        prev_Time = curr_Time
-        previousAngleZ = angle_z
-
-        #Print motor velocity
-        motorVelocity = my_drive.encoder.vel.estimate
-        print(f'Current velocity: {motorVelocity}')
 
         # Sleep for a while to reduce the update rate
         time.sleep(0.01)
