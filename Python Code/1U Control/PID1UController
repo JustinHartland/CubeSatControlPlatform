@@ -58,8 +58,13 @@ try:
 
         angle_z = getOrientationAngles(curr_Time, prev_Time, previousAngleZ)
 
-        #Set control velocity
-        controlTorque = pid(angle_z)
+        #Set control torque
+        if angle_z > -5 and angle_z < 5:
+            controlTorque = 0
+        elif angle_z >= 5:
+            controlTorque = pid(angle_z)
+        elif angle_z <= -5:
+            controlTorque = pid(angle_z)
 
         #Set motor current to control torque
         my_drive.axis0.controller.input_torque = controlTorque
