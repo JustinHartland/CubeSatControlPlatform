@@ -78,13 +78,13 @@ def getOrientationAngles(prev_time, roll, pitch, yaw):
     # Print angular positions
     print(f'Yaw: {yaw:.2f}')
 
-    return yaw
+    return yaw, prev_time
 
 try:
     while True:
         curr_Time = time.time()
 
-        yaw = getOrientationAngles(last_time, roll, pitch, yaw)
+        [yaw, last_time] = getOrientationAngles(last_time, roll, pitch, yaw)
 
         #Set control torque
         if yaw > -5 and yaw < 5:
