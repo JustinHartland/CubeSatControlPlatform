@@ -58,7 +58,7 @@ targetAngle = 0                                     #Set target orientation angl
 pid = PID(-0.03, 0, 0, setpoint = targetAngle)       #Configure PID constants, and target
 pid.output_limits = (-20, 20)                          #Set limits on torque
 
-def getOrientationAngles(currentTime, previousTime, previousAngleZ):
+def getOrientationAngles(prev_time):
     # Read gyroscope data and subtract biases
     gyro_x, gyro_y, gyro_z = sensor.gyro
     gyro_x -= gyro_offset_x
@@ -67,8 +67,8 @@ def getOrientationAngles(currentTime, previousTime, previousAngleZ):
 
     # Get the time difference
     current_time = time.time()
-    dt = current_time - last_time
-    last_time = current_time
+    dt = current_time - prev_time
+    prev_time = current_time
 
     # Integrate the gyroscope data
     roll += gyro_x * dt
@@ -84,7 +84,7 @@ try:
     while True:
         curr_Time = time.time()
 
-        yaw = getOrientationAngles()
+        yaw = getOrientationAngles(last_time)
 
         #Set control torque
         if yaw > -5 and yaw < 5:
