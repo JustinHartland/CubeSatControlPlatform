@@ -51,7 +51,7 @@ gyro_offset_x, gyro_offset_y, gyro_offset_z = calibrate_gyro()
 roll, pitch, yaw = 0.0, 0.0, 0.0
 
 # Time initialization
-prev_Time = time.time()
+last_time = time.time()
 
 #PID Controller Setup
 targetAngle = 0                                     #Set target orientation angle here
