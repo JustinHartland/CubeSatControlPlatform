@@ -5,7 +5,7 @@
 </div>
 
 <div align="center">
-    <img src="./Images/CubeSatInGimbalRings.jpg" alt="CubeSat in Gimbal Rings" width="300"/>
+    <img src="./CubeSat Reaction Wheel Attitude Control Platform/Images/CubeSatInGimbalRings.jpg" alt="CubeSat in Gimbal Rings" width="300"/>
 </div>
 ---
 
