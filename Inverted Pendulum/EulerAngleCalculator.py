@@ -7,7 +7,7 @@ import adafruit_lsm9ds1
 class EulerAngleCalculator:
     def __init__(self):
         i2c = board.I2C()
-        sensor = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
+        lsm = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
 
         # Previous time for integration
         self.prev_time = time.time()
