@@ -26,7 +26,7 @@ class EulerAngleCalculator:
         self.alpha = 0.98
 
     def get_accel_angle(self):
-        ax, ay, az = self.lsm.accelerometer
+        ax, ay, az = self.lsm.acceleration
         # Calculate roll and pitch angles from accelerometer data
         accel_angle_x = math.atan2(ay, math.sqrt(ax**2 + az**2)) * 180 / math.pi
         accel_angle_y = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
