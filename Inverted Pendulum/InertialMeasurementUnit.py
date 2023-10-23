@@ -63,12 +63,18 @@ class InertialMeasurementUnit:
         sum_gx = 0
         sum_gy = 0
         sum_gz = 0
+
+        i = 0
         
         for _ in range(samples):
             gx, gy, gz = self.lsm.gyro
             sum_gx += gx
             sum_gy += gy
             sum_gz += gz
+
+            i += 1
+            print(i)
+            
             time.sleep(0.01)
         
         # Calculate average
