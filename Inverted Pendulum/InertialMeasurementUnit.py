@@ -16,11 +16,6 @@ class InertialMeasurementUnit:
         self.angle_y = 0
         self.angle_z = 0
 
-        # Previous angles from gyroscope
-        self.gyro_angle_x = 0
-        self.gyro_angle_y = 0
-        self.gyro_angle_z = 0
-
         # Gyro offsets
         self.gyro_offset_x = 0
         self.gyro_offset_y = 0
