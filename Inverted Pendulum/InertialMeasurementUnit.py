@@ -88,5 +88,5 @@ if __name__ == "__main__":
     IMU1.calibrate_gyro()
     while True:
         roll, pitch, yaw = IMU1.get_euler_angles()
-        print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
+        print(f"Roll: {roll*180/math.pi:.2f}, Pitch: {pitch*180/math.pi:.2f}, Yaw: {yaw*180/math.pi:.2f}")
         time.sleep(0.1)
