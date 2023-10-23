@@ -4,7 +4,7 @@ import board
 import busio
 import adafruit_lsm9ds1
 
-class EulerAngleCalculator:
+class InertialMeasurementUnit:
     def __init__(self):
         i2c = board.I2C()
         self.lsm = adafruit_lsm9ds1.LSM9DS1_I2C(i2c)
@@ -84,9 +84,9 @@ class EulerAngleCalculator:
 
 #Example implementation code
 if __name__ == "__main__":
-    calculator = EulerAngleCalculator()
-    calculator.calibrate_gyro()
+    IMU1 = InertialMeasurementUnit()
+    IMU1.calibrate_gyro()
     while True:
-        roll, pitch, yaw = calculator.get_euler_angles()
+        roll, pitch, yaw = IMU1.get_euler_angles()
         print(f"Roll: {roll:.2f}, Pitch: {pitch:.2f}, Yaw: {yaw:.2f}")
         time.sleep(0.1)
