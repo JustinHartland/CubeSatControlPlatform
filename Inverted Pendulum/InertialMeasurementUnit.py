@@ -11,6 +11,8 @@ class InertialMeasurementUnit:
         self.accel_range = adafruit_lsm9ds1.ACCELRANGE_2G
         self.gyro_scale = adafruit_lsm9ds1.GYROSCALE_245DPS
 
+        self.prev_time = time.time()
+
         #Euler angles
         self.angle_x = 0
         self.angle_y = 0
@@ -25,7 +27,6 @@ class InertialMeasurementUnit:
         self.imu_rate_time = time.time()
         self.imu_read_count = 0
         self.imu_read_rate = 0
-        self.running = True
 
         # Filter coefficient for complementary filter
         self.alpha = 0.98
@@ -33,7 +34,7 @@ class InertialMeasurementUnit:
         #Calibrate gyro
         self.calibrate_gyro()
 
-        self.prev_time = time.time()
+        #self.prev_time = time.time()
 
     def get_accel_angle(self):
         ax, ay, az = self.lsm.acceleration
