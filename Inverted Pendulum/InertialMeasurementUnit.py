@@ -46,15 +46,9 @@ class InertialMeasurementUnit:
     def get_gyro_angle(self):
         gx, gy, gz = self.lsm.gyro
 
-        print(self.gyro_offset_x)
-        print(self.gyro_offset_y)
-        print(self.gyro_offset_z)
-        time.sleep(1)
-
         gx -= self.gyro_offset_x
         gy -= self.gyro_offset_y
         gz -= self.gyro_offset_z
-
 
         curr_time = time.time()
         dt = curr_time - self.prev_time
@@ -83,11 +77,6 @@ class InertialMeasurementUnit:
         self.gyro_offset_x = sum_gx / samples
         self.gyro_offset_y = sum_gy / samples
         self.gyro_offset_z = sum_gz / samples
-
-        print(self.gyro_offset_x)
-        print(self.gyro_offset_y)
-        print(self.gyro_offset_z)
-        time.sleep(1)
         
         print("Gyro calibration done!")
 

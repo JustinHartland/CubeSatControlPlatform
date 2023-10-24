@@ -3,5 +3,9 @@ import board
 import adafruit_lsm9ds1
 import odrive
 from simple_pid import PID
+import InertialMeasurementUnit
 
-#Calibration
+#Initialize instance of InertialMeasurementUnit
+IMU1 = InertialMeasurementUnit()
+IMU1.calibrate_gyro()
+
