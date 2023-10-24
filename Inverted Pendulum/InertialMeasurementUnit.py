@@ -46,9 +46,9 @@ class InertialMeasurementUnit:
     def get_gyro_angle(self):
         gx, gy, gz = self.lsm.gyro
 
-        gx -= self.gyro_offset_x
-        gy -= self.gyro_offset_y
-        gz -= self.gyro_offset_z
+        #gx -= self.gyro_offset_x
+        #gy -= self.gyro_offset_y
+        #gz -= self.gyro_offset_z
 
         curr_time = time.time()
         dt = curr_time - self.prev_time
@@ -101,5 +101,5 @@ if __name__ == "__main__":
     IMU1 = InertialMeasurementUnit()
     while True:
         angle_x, angle_y, angle_z = IMU1.get_euler_angles()
-        print(f"Roll: {angle_x:.2f}, Pitch: {angle_y:.2f}, Yaw: {angle_z:.2f}")
+        print(f"Roll: {angle_x:.2f}")
         time.sleep(0.1)
