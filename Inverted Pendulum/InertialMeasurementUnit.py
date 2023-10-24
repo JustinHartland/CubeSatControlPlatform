@@ -11,7 +11,7 @@ class InertialMeasurementUnit:
         self.accel_range = adafruit_lsm9ds1.ACCELRANGE_2G
         self.gyro_scale = adafruit_lsm9ds1.GYROSCALE_245DPS
 
-        self.prev_time = time.time()
+        self.prev_time = time.monotonic()
 
         #Euler angles
         self.angle_x = 0
@@ -24,7 +24,7 @@ class InertialMeasurementUnit:
         self.gyro_offset_z = 0
 
         # Gyro frequency
-        self.imu_rate_time = time.time()
+        self.imu_rate_time = time.monotonic()
         self.imu_read_count = 0
         self.imu_read_rate = 0
 
@@ -46,11 +46,11 @@ class InertialMeasurementUnit:
     def get_gyro_angle(self):
         gx, gy, gz = self.lsm.gyro
 
-        #gx -= self.gyro_offset_x
-        #gy -= self.gyro_offset_y
-        #gz -= self.gyro_offset_z
+        gx -= self.gyro_offset_x
+        gy -= self.gyro_offset_y
+        gz -= self.gyro_offset_z
 
-        curr_time = time.time()
+        curr_time = time.monotonic()
         dt = curr_time - self.prev_time
         self.prev_time = curr_time
         self.gyro_angle_x = self.angle_x + gx * dt
