@@ -102,4 +102,4 @@ if __name__ == "__main__":
     while True:
         angle_x, angle_y, angle_z = IMU1.get_euler_angles()
         print(f"Roll: {angle_x:.2f}")
-        time.sleep(0.1)
+        time.sleep(0.01)
