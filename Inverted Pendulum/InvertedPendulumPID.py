@@ -60,7 +60,7 @@ def check_odrive_status():
                 return
 
             # Check every 5 seconds
-            time.sleep(5)
+            time.sleep(1)
         else:
             print("ODrive not found!")
             time.sleep(1)
@@ -87,7 +87,6 @@ for msg in bus:
 
 #Initialize instance of InertialMeasurementUnit
 IMU1 = InertialMeasurementUnit()
-IMU1.calibrate_gyro()
 
 #Setup PID controller
 set_point = 0 #Pendulum upright
