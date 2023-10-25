@@ -28,7 +28,7 @@ def get_pos_vel(imu_obj):
         for msg in bus:
             if msg.arbitration_id == (node_id << 5 | 0x09):
                 pos, vel = struct.unpack('<ff', bytes(msg.data))
-                print(f"Roll: {imu_obj.angle_x:.2f} degrees, pos: {pos:.3f} [turns], vel: {vel:.3f} [turns/s]")
+                print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
         
 
 #CAN initialization
