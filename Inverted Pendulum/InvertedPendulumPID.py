@@ -9,12 +9,6 @@ import struct
 from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 
-# Find an ODrive
-my_drive = odrive.find_any()
-if my_drive is None:
-    print("ODrive not found!")
-    exit(1)
-
 #Set motor to v = velocity
 def set_vel():
     global running
@@ -36,34 +30,36 @@ def get_pos_vel(imu_obj):
                 pos, vel = struct.unpack('<ff', bytes(msg.data))
                 print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
 
-def check_odrive_status():
-    global running
+def monitor_odrive_status():
+    global running, odrive_error_detected
+
+    # Replace with the appropriate CAN ID for requesting status
+    STATUS_REQUEST_ID = (node_id << 5 | 0x03) 
+
+    # Replace with the appropriate CAN ID for receiving status
+    STATUS_REPLY_ID = (node_id << 5 | 0x03) 
+
     while running:
-        # Check errors on both axes and the ODrive itself
-        errors = [
-            ("ODrive", my_drive.error),
-            ("Axis 0", my_drive.axis0.error),
-            ("Motor 0", my_drive.axis0.motor.error),
-            ("Encoder 0", my_drive.axis0.encoder.error),
-            ("Axis 1", my_drive.axis1.error),
-            ("Motor 1", my_drive.axis1.motor.error),
-            ("Encoder 1", my_drive.axis1.encoder.error),
-        ]
+        # Send a status request to the ODrive
+        bus.send(can.Message(arbitration_id=STATUS_REQUEST_ID, is_extended_id=False))
 
-        # If any error is present, print it and terminate the program
-        error_detected = False
-        for component, error in errors:
-            if error != 0:
-                print(f"Error on {component}: {error}")
-                error_detected = True
+        # Wait for a reply
+        start_time = time.time()
+        timeout = 1  # Adjust timeout as needed
+        while time.time() - start_time < timeout:
+            msg = bus.recv(timeout=timeout)
+            if msg and msg.arbitration_id == STATUS_REPLY_ID:
+                # Decode the status message. This is a placeholder. You'll need to update the unpacking logic.
+                status = struct.unpack('<I', bytes(msg.data[:4]))[0]
 
-        if error_detected:
-            running = False
-            print("ODrive error detected. Terminating program.")
-            return
+                # Check for an error (replace with actual error check logic)
+                if status != 0:  # assuming non-zero means error
+                    print(f"ODrive error detected: {status}")
+                    odrive_error_detected = True
+                    running = False
+                    break
 
-        # Check every 5 seconds
-        time.sleep(5)
+        time.sleep(1)  # Adjust the sleep duration as needed
 
 
 #CAN initialization
@@ -96,6 +92,7 @@ pid.output_limits = (-50, 50) #RPS bounds on motor
 
 #Global variables
 running = True
+odrive_error_detected = False
 
 # Threads
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
