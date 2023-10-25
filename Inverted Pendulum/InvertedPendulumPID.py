@@ -55,3 +55,11 @@ motor_thread.start()
 
 imu_thread.join()
 motor_thread.join()
+
+try:
+    while True:
+        time.sleep(0.001)
+except KeyboardInterrupt:
+    running = False
+    bus.shutdown()
+    print("\nProgram terminated gracefully.")
