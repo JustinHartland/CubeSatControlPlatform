@@ -98,7 +98,7 @@ odrive_error_detected = False
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
 motor_thread = threading.Thread(target=set_vel)
 pos_thread = threading.Thread(target=get_pos_vel, args=(IMU1,))
-status_thread = threading.Thread(target=check_odrive_status)
+status_thread = threading.Thread(target=monitor_odrive_status)
 
 imu_thread.start()
 motor_thread.start()
