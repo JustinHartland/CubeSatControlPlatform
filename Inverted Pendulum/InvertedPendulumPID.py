@@ -37,6 +37,7 @@ def check_odrive_status():
         my_drive = odrive.find_any()
 
         if my_drive is not None:
+            print('Searching for errors')
             # Check errors on both axes and the ODrive itself
             errors = [
                 ("ODrive", my_drive.error),
