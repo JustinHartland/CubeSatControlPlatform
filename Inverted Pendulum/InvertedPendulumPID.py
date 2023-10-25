@@ -7,7 +7,7 @@ import threading
 import can 
 import struct
 from simple_pid import PID
-import InertialMeasurementUnit
+from InertialMeasurementUnit import InertialMeasurementUnit
 
 #Set motor to v = velocity
 def set_vel():
@@ -33,6 +33,8 @@ bus.send(can.Message(arbitration_id=(node_id << 5 | 0x07), data=struct.pack('<I'
 
 start_time = time.time()
 timeout = 10  # seconds
+
+print('Just before for loop')
 
 for msg in bus:
     if time.time() - start_time > timeout:
@@ -68,7 +70,7 @@ motor_thread.start()
 try:
     while True:
         time.sleep(0.001)
-        print('hello')
+
 except KeyboardInterrupt:
     running = False
     bus.shutdown()
