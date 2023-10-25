@@ -90,7 +90,7 @@ IMU1 = InertialMeasurementUnit()
 
 #Setup PID controller
 set_point = 0 #Pendulum upright
-pid = PID(1, 0.1, 0.01, setpoint=set_point)
+pid = PID(0.5, 0, 0, setpoint=set_point)
 pid.output_limits = (-50, 50) #RPS bounds on motor
 
 #Global variables
