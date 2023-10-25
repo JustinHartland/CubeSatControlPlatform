@@ -68,6 +68,7 @@ motor_thread.start()
 try:
     while True:
         time.sleep(0.001)
+        print('hello')
 except KeyboardInterrupt:
     running = False
     bus.shutdown()
