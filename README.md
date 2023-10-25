@@ -32,7 +32,7 @@ Faculty Mentor: Dr.Drakunov
 
 Team Members: Justin Hartland, Dylan Ballback, Ella Cheatham, Vish Ramisetty, Jacob Salazar, Isaac Stitt, Ryan Taylor
 
-This project is being generously funded by ERAU - Daytona Beach's Office of Undergraduat Research
+This project is being generously funded by ERAU - Daytona Beach's Office of Undergraduate Research
 
 ---
 
