@@ -29,6 +29,35 @@ def get_pos_vel(imu_obj):
             if msg.arbitration_id == (node_id << 5 | 0x09):
                 pos, vel = struct.unpack('<ff', bytes(msg.data))
                 print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
+
+def check_odrive_status():
+    global running
+    while running:
+        # Find an ODrive
+        my_drive = odrive.find_any()
+        if my_drive is not None:
+            # Check errors on both axes and the ODrive itself
+            errors = [
+                ("ODrive", my_drive.error),
+                ("Axis 0", my_drive.axis0.error),
+                ("Motor 0", my_drive.axis0.motor.error),
+                ("Encoder 0", my_drive.axis0.encoder.error),
+                ("Axis 1", my_drive.axis1.error),
+                ("Motor 1", my_drive.axis1.motor.error),
+                ("Encoder 1", my_drive.axis1.encoder.error),
+            ]
+
+            # If any error is present, print it
+            for component, error in errors:
+                if error != 0:
+                    print(f"Error on {component}: {error}")
+
+            # Check every 5 seconds
+            time.sleep(5)
+        else:
+            print("ODrive not found!")
+            time.sleep(1)
+
         
 
 #CAN initialization
@@ -67,10 +96,12 @@ running = True
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
 motor_thread = threading.Thread(target=set_vel)
 pos_thread = threading.Thread(target=get_pos_vel, args=(IMU1,))
+status_thread = threading.Thread(target=check_odrive_status)
 
 imu_thread.start()
 motor_thread.start()
 pos_thread.start()
+status_thread.start()
 
 try:
     while True:
