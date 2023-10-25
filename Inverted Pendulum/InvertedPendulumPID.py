@@ -55,5 +55,3 @@ motor_thread.start()
 
 imu_thread.join()
 motor_thread.join()
-
-
