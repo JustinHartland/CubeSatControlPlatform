@@ -22,6 +22,13 @@ def read_angle(imu_obj):
     while running:
         imu_obj.get_euler_angles()
         time.sleep(0.01)
+
+def get_pos_vel(imu_obj):
+    while running:
+        for msg in bus:
+            if msg.arbitration_id == (node_id << 5 | 0x09):
+                pos, vel = struct.unpack('<ff', bytes(msg.data))
+                print(f"Roll: {imu_obj.angle_x:.2f} degrees, pos: {pos:.3f} [turns], vel: {vel:.3f} [turns/s]")
         
 
 #CAN initialization
@@ -59,11 +66,11 @@ running = True
 # Threads
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
 motor_thread = threading.Thread(target=set_vel)
-#pos_thread = threading.Thread(target=get_pos_vel)
+pos_thread = threading.Thread(target=get_pos_vel, args=(IMU1,))
 
 imu_thread.start()
 motor_thread.start()
-#pos_thread.start()
+pos_thread.start()
 
 try:
     while True:
