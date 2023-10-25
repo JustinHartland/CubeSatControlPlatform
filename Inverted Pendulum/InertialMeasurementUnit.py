@@ -29,7 +29,7 @@ class InertialMeasurementUnit:
         self.imu_read_rate = 0
 
         # Filter coefficient for complementary filter
-        self.alpha = 0.98
+        self.alpha = 0.9
 
         #Calibrate gyro
         self.calibrate_gyro()
