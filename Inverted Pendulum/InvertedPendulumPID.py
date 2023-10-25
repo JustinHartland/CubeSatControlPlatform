@@ -34,8 +34,6 @@ bus.send(can.Message(arbitration_id=(node_id << 5 | 0x07), data=struct.pack('<I'
 start_time = time.time()
 timeout = 10  # seconds
 
-print('Just before for loop')
-
 for msg in bus:
     if time.time() - start_time > timeout:
         print("Timeout waiting for the expected CAN message.")
