@@ -9,6 +9,12 @@ import struct
 from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 
+# Find an ODrive
+my_drive = odrive.find_any()
+if my_drive is None:
+    print("ODrive not found!")
+    exit(1)
+
 #Set motor to v = velocity
 def set_vel():
     global running
@@ -33,37 +39,32 @@ def get_pos_vel(imu_obj):
 def check_odrive_status():
     global running
     while running:
-        # Find an ODrive
-        my_drive = odrive.find_any()
-        if my_drive is not None:
-            # Check errors on both axes and the ODrive itself
-            errors = [
-                ("ODrive", my_drive.error),
-                ("Axis 0", my_drive.axis0.error),
-                ("Motor 0", my_drive.axis0.motor.error),
-                ("Encoder 0", my_drive.axis0.encoder.error),
-                ("Axis 1", my_drive.axis1.error),
-                ("Motor 1", my_drive.axis1.motor.error),
-                ("Encoder 1", my_drive.axis1.encoder.error),
-            ]
+        # Check errors on both axes and the ODrive itself
+        errors = [
+            ("ODrive", my_drive.error),
+            ("Axis 0", my_drive.axis0.error),
+            ("Motor 0", my_drive.axis0.motor.error),
+            ("Encoder 0", my_drive.axis0.encoder.error),
+            ("Axis 1", my_drive.axis1.error),
+            ("Motor 1", my_drive.axis1.motor.error),
+            ("Encoder 1", my_drive.axis1.encoder.error),
+        ]
 
-            # If any error is present, print it and terminate program
-            error_detected = False
-            for component, error in errors:
-                if error != 0:
-                    print(f"Error on {component}: {error}")
-                    error_detected = True
+        # If any error is present, print it and terminate the program
+        error_detected = False
+        for component, error in errors:
+            if error != 0:
+                print(f"Error on {component}: {error}")
+                error_detected = True
 
-            if error_detected:
-                running = False
-                print("ODrive error detected. Terminating program.")
-                return
+        if error_detected:
+            running = False
+            print("ODrive error detected. Terminating program.")
+            return
 
-            # Check every 5 seconds
-            time.sleep(1)
-        else:
-            print("ODrive not found!")
-            time.sleep(1)
+        # Check every 5 seconds
+        time.sleep(5)
+
 
 #CAN initialization
 node_id = 0
