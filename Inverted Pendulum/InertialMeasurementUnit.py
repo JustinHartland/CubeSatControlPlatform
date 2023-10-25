@@ -1,8 +1,8 @@
-import time
-import math
-import board
-import busio
-import adafruit_lsm9ds1
+#import time
+#import math
+#import board
+#import busio
+#import adafruit_lsm9ds1
 
 class InertialMeasurementUnit:
     def __init__(self):
@@ -94,12 +94,12 @@ class InertialMeasurementUnit:
         self.angle_y = self.complementary_filter(accel_angle_y, gyro_angle_y)
         self.angle_z = gyro_angle_z  # Yaw is only from gyro as magnetometer is not used here
 
-        return self.angle_x, self.angle_y, self.angle_z
+        return self.angle_x#, self.angle_y, self.angle_z
 
 #Example implementation code
-if __name__ == "__main__":
-    IMU1 = InertialMeasurementUnit()
-    while True:
-        angle_x, angle_y, angle_z = IMU1.get_euler_angles()
-        print(f"Roll: {angle_x:.2f}")
-        time.sleep(0.01)
+#if __name__ == "__main__":
+#    IMU1 = InertialMeasurementUnit()
+#    while True:
+#        angle_x, angle_y, angle_z = IMU1.get_euler_angles()
+#        print(f"Roll: {angle_x:.2f}")
+#        time.sleep(0.01)
