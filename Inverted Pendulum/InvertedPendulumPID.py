@@ -35,9 +35,7 @@ def check_odrive_status():
     while running:
         # Find an ODrive
         my_drive = odrive.find_any()
-
         if my_drive is not None:
-            print('Searching for errors')
             # Check errors on both axes and the ODrive itself
             errors = [
                 ("ODrive", my_drive.error),
@@ -49,18 +47,23 @@ def check_odrive_status():
                 ("Encoder 1", my_drive.axis1.encoder.error),
             ]
 
-            # If any error is present, print it
+            # If any error is present, print it and terminate program
+            error_detected = False
             for component, error in errors:
                 if error != 0:
                     print(f"Error on {component}: {error}")
+                    error_detected = True
+
+            if error_detected:
+                running = False
+                print("ODrive error detected. Terminating program.")
+                return
 
             # Check every 5 seconds
             time.sleep(5)
         else:
             print("ODrive not found!")
             time.sleep(1)
-
-        
 
 #CAN initialization
 node_id = 0
