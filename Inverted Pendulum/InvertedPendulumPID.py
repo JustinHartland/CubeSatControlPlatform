@@ -61,6 +61,16 @@ def monitor_odrive_status():
 
         time.sleep(1)  # Adjust the sleep duration as needed
 
+# Function to set the maximum RPM of the ODrive
+def set_max_rpm(rps):
+    # Replace with the correct CAN ID for setting max RPM
+    MAX_RPS_SET_ID = (node_id << 5 | 0x0f) 
+
+    # Send a command to set the max RPM
+    # This is a placeholder. You'll need to update the packing logic.
+    data = struct.pack('<I', int(rps * 60))  # Converting RPS to RPM
+    bus.send(can.Message(arbitration_id=MAX_RPS_SET_ID, data=data, is_extended_id=False))
+
 
 #CAN initialization
 node_id = 0
@@ -93,6 +103,9 @@ pid.output_limits = (-50, 50) #RPS bounds on motor
 #Global variables
 running = True
 odrive_error_detected = False
+
+# Set the maximum RPM of the ODrive to 50 RPS (3000 RPM)
+set_max_rpm(50)
 
 # Threads
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
