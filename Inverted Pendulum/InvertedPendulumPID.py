@@ -10,6 +10,16 @@ from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 
 #Set motor to v = velocity
+def startup_sequence():
+    velocity = 30
+    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
+    time.sleep(3)
+
+    velocity = 0
+    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
+    time.sleep(3)
+
+#Set motor to v = velocity
 def set_vel():
     global running
     while running:
@@ -29,37 +39,6 @@ def get_pos_vel(imu_obj):
             if msg.arbitration_id == (node_id << 5 | 0x09):
                 pos, vel = struct.unpack('<ff', bytes(msg.data))
                 print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
-
-def monitor_odrive_status():
-    global running, odrive_error_detected
-
-    # Replace with the appropriate CAN ID for requesting status
-    STATUS_REQUEST_ID = (node_id << 5 | 0x03) 
-
-    # Replace with the appropriate CAN ID for receiving status
-    STATUS_REPLY_ID = (node_id << 5 | 0x03) 
-
-    while running:
-        # Send a status request to the ODrive
-        bus.send(can.Message(arbitration_id=STATUS_REQUEST_ID, is_extended_id=False))
-
-        # Wait for a reply
-        start_time = time.time()
-        timeout = 1  # Adjust timeout as needed
-        while time.time() - start_time < timeout:
-            msg = bus.recv(timeout=timeout)
-            if msg and msg.arbitration_id == STATUS_REPLY_ID:
-                # Decode the status message. This is a placeholder. You'll need to update the unpacking logic.
-                status = struct.unpack('<I', bytes(msg.data[:4]))[0]
-
-                # Check for an error (replace with actual error check logic)
-                if status != 0:  # assuming non-zero means error
-                    print(f"ODrive error detected: {status}")
-                    odrive_error_detected = True
-                    running = False
-                    break
-
-        time.sleep(1)  # Adjust the sleep duration as needed
 
 
 #CAN initialization
@@ -87,23 +66,24 @@ IMU1 = InertialMeasurementUnit()
 
 #Setup PID controller
 set_point = 0 #Pendulum upright
-pid = PID(0.5, 0, 0, setpoint=set_point)
-pid.output_limits = (-50, 50) #RPS bounds on motor
+pid = PID(-1, 0, 0, setpoint=set_point)
+pid.output_limits = (-30, 30) #RPS bounds on motor
 
 #Global variables
 running = True
 odrive_error_detected = False
 
+#Initiate startup sequence
+startup_sequence()
+
 # Threads
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
 motor_thread = threading.Thread(target=set_vel)
 pos_thread = threading.Thread(target=get_pos_vel, args=(IMU1,))
-status_thread = threading.Thread(target=monitor_odrive_status)
 
 imu_thread.start()
 motor_thread.start()
 pos_thread.start()
-status_thread.start()
 
 try:
     while True:
