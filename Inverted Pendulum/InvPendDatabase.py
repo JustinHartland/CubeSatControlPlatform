@@ -9,7 +9,7 @@ class InvPendDatabase:
 
         self.create_table(
             '''CREATE TABLE IF NOT EXISTS trials(
-            trial_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            trial_id INTEGER PRIMARY KEY AUTOINCREMENT
             );'''
         )
 
