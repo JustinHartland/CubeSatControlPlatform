@@ -8,13 +8,13 @@ class InvPendDatabase:
         self.conn = self.create_connection()
 
         self.create_table(
-            '''CREATE TABLE IF NOT EXISTS trials (
+            '''CREATE TABLE IF NOT EXISTS trials(
             trial_id INTEGER PRIMARY KEY AUTOINCREMENT,
             );'''
         )
 
         self.create_table(
-            '''CREATE TABLE IF NOT EXISTS imu_data (
+            '''CREATE TABLE IF NOT EXISTS imu_data(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             trial_id INTEGER,
             time REAL,
