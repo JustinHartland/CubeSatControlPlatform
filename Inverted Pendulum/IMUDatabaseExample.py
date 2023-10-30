@@ -12,9 +12,8 @@ IMU1 = InertialMeasurementUnit()
 #[angle_x, angle_y, angle_z]
 imuData = []
 
-
 while True:
-    imuData = IMU1.get_euler_angles()
+    imuData = [time.time(), IMU1.get_euler_angles()]
     imuDatabase.add_imu_data(imuData)
     print(imuDatabase.get_column_data("imu_data, angle_x"))
     time.sleep(0.01)
