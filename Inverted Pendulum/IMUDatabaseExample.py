@@ -19,6 +19,6 @@ while True:
     imuData = [initialTime-time.time(), *imuEulerAngles]
     imuDatabase.add_imu_data(imuData)
 
-    print("Angle X: %.3f deg", imuEulerAngles(0))
-    
+    print(f"Angle X: {imuEulerAngles[0]} deg")
+
     time.sleep(0.01)
