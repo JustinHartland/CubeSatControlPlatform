@@ -17,5 +17,5 @@ initialTime = time.time()
 while True:
     imuData = [initialTime-time.time(), *IMU1.get_euler_angles()]
     imuDatabase.add_imu_data(imuData)
-    print(imuDatabase.get_column_data("imu_data, angle_x"))
+    print(imuDatabase.get_column_data("imu_data", "angle_x"))
     time.sleep(0.01)
