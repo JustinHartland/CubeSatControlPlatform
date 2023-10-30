@@ -34,15 +34,24 @@ class InertialMeasurementUnit:
         #Calibrate gyro
         self.calibrate_gyro()
 
+        #IMU data array to be appended to InvPendDatabase
+        self.rawGyroArray = []
+        self.rawAccelArray = []
+        self.eulerAngleArray = []
+
     def get_accel_angle(self):
         ax, ay, az = self.lsm.acceleration
+        self.rawAccelArray = [ax, ay, az]
+
         # Calculate roll and pitch angles from accelerometer data
         accel_angle_x = math.atan2(ay, az) * 180 / math.pi
         accel_angle_y = math.atan2(ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
+
         return accel_angle_x, accel_angle_y
 
     def get_gyro_angle(self):
         gx, gy, gz = self.lsm.gyro
+        self.rawGyroArray = [gx, gy, gz]
 
         gx -= self.gyro_offset_x
         gy -= self.gyro_offset_y
@@ -91,5 +100,3 @@ class InertialMeasurementUnit:
         self.angle_x = self.complementary_filter(accel_angle_x, gyro_angle_x)
         self.angle_y = self.complementary_filter(accel_angle_y, gyro_angle_y)
         self.angle_z = gyro_angle_z  # Yaw is only from gyro as magnetometer is not used here
-
-        return self.angle_x, self.angle_y, self.angle_z

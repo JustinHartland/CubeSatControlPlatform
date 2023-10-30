@@ -3,7 +3,11 @@ from InvPendDatabase import InvPendDatabase
 import time
 
 #Create instance of InertialMeasurementUnit:
-imuDatabase = InvPendDatabase("imu_data.db")
+imuDatabase = InvPendDatabase("InvPendDatabase.db")
+
+#Add a new trial to the database
+trial_id = imuDatabase.add_trial()
+print(f"Added Trial with ID: {trial_id}")
 
 #Create instance of InvPendDatabase:
 IMU1 = InertialMeasurementUnit()
@@ -15,10 +19,10 @@ imuData = []
 initialTime = time.time()
 
 while True:
-    imuEulerAngles = IMU1.get_euler_angles()
-    imuData = [initialTime-time.time(), *imuEulerAngles]
-    imuDatabase.add_imu_data(imuData)
+    IMU1.get_euler_angles()
+    imuData = [initialTime-time.time(), *IMU1.rawAccelArray, *IMU1.rawGyroArray, IMU1.angle_x, IMU1.angle_y, IMU1.angle_z]
+    imuDatabase.add_imu_data(trial_id, imuData)
 
-    print(f"Angle X: {imuEulerAngles[0]} deg")
+    print(f"Angle X: {IMU1.angle_x} deg")
 
     time.sleep(0.01)
