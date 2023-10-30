@@ -8,7 +8,7 @@ class InvPendDatabase:
         self.conn = self.create_connection()
 
         self.create_table(
-            '''CREATE TABLE IF NOT EXISTS trials (
+            '''CREATE TABLE IF NOT EXISTS imuDatabase (
             trial_id INTEGER PRIMARY KEY AUTOINCREMENT,
             );'''
         )
@@ -27,7 +27,7 @@ class InvPendDatabase:
             angle_x REAL,
             angle_y REAL,
             angle_z REAL,
-            FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
+            FOREIGN KEY (trial_id) REFERENCES imuDatabase (trial_id)
             );'''
         )
 
@@ -48,7 +48,7 @@ class InvPendDatabase:
 
     def add_trial(self):
         """
-            Add a new trial to the trials table
+            Add a new trial to the imuDatabase table
         """
         sql = ''' INSERT INTO imuDatabase DEFAULT VALUES '''
         cur = self.conn.cursor()
@@ -71,7 +71,7 @@ class InvPendDatabase:
         """
         Returns all the trials
         """
-        sql = ''' SELECT * FROM trials '''
+        sql = ''' SELECT * FROM imuDatabase '''
         cur = self.conn.cursor()
         cur.execute(sql)
         return cur.fetchall()
@@ -101,5 +101,5 @@ class InvPendDatabase:
         # Delete associated imu_data first to maintain integrity
         cur = self.conn.cursor()
         cur.execute('''DELETE FROM imu_data WHERE trial_id=?''', (trial_id,))
-        cur.execute('''DELETE FROM trials WHERE trial_id=?''', (trial_id,))
+        cur.execute('''DELETE FROM imuDatabase WHERE trial_id=?''', (trial_id,))
         self.conn.commit()
