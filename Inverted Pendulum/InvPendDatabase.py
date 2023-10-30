@@ -50,7 +50,7 @@ class InvPendDatabase:
         """
             Add a new trial to the trials table
         """
-        sql = ''' INSERT INTO trials DEAFULT VALUES '''
+        sql = ''' INSERT INTO trials DEFAULT VALUES '''
         cur = self.conn.cursor()
         cur.execute(sql)
         self.conn.commit()
