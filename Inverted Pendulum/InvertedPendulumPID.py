@@ -10,16 +10,6 @@ from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 
 #Set motor to v = velocity
-def startup_sequence():
-    velocity = 30
-    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
-    time.sleep(3)
-
-    velocity = 0
-    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
-    time.sleep(3)
-
-#Set motor to v = velocity
 def set_vel():
     global running
     while running:
@@ -72,9 +62,6 @@ pid.output_limits = (-30, 30) #RPS bounds on motor
 #Global variables
 running = True
 odrive_error_detected = False
-
-#Initiate startup sequence
-startup_sequence()
 
 # Threads
 imu_thread = threading.Thread(target=read_angle, args=(IMU1,))
