@@ -15,7 +15,10 @@ imuData = []
 initialTime = time.time()
 
 while True:
-    imuData = [initialTime-time.time(), *IMU1.get_euler_angles()]
+    imuEulerAngles = IMU1.get_euler_angles()
+    imuData = [initialTime-time.time(), *imuEulerAngles]
     imuDatabase.add_imu_data(imuData)
-    print(imuDatabase.get_column_data("imu_data", "angle_x"))
+
+    print("Angle X: %.3f deg", imuEulerAngles(0))
+    
     time.sleep(0.01)
