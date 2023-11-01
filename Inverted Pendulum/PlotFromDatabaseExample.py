@@ -16,7 +16,7 @@ def plot_imu_data(data):
     # Splitting data into columns for plotting
     times, angles_x = zip(*data)
     
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 8))
 
     plt.plot(times, angles_x, label='Angle X')
 
@@ -29,6 +29,6 @@ def plot_imu_data(data):
     plt.show()
 
 #Plot data
-dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", 4)
+dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", 7)
 plot_imu_data(dataToPlot)
 
