@@ -29,6 +29,6 @@ def plot_imu_data(data):
     plt.show()
 
 #Plot data
-dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", 7)
+dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", 10)
 plot_imu_data(dataToPlot)
 
