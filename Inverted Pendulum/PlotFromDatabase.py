@@ -20,6 +20,16 @@ def plot_imu_data(data):
 
     plt.plot(times, angles_x, label='Angle X')
 
+    # Setting y-axis limits and adding grid lines for y-axis
+    plt.ylim(-180, 180)
+    plt.yticks(range(-180, 181, 30))  # Setting y-ticks every 30 degrees
+
+    # Adding grid lines for x-axis
+    x_ticks_interval = (max(times) - min(times)) / 10
+    plt.xticks([min(times) + i * x_ticks_interval for i in range(11)])
+
+    # Adding grid
+    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
 
     plt.title("IMU Angles over Time")
     plt.xlabel("Time")
