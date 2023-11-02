@@ -12,6 +12,17 @@ def fetch_imu_data_for_trial(database_name, trial_id):
     
     return data
 
+def get_last_trial_id(database_name):
+    conn = sqlite3.connect(database_name)
+    cur = conn.cursor()
+    
+    cur.execute("SELECT MAX(trial_id) FROM imu_data")
+    last_trial_id = cur.fetchone()[0]
+    
+    conn.close()
+    
+    return last_trial_id
+
 def plot_imu_data(data):
     # Splitting data into columns for plotting
     times, angles_x = zip(*data)
@@ -38,7 +49,12 @@ def plot_imu_data(data):
 
     plt.show()
 
-#Plot data
-dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", 10)
-plot_imu_data(dataToPlot)
+# Ask the user for the trial to plot
+trial_id = int(input("Please enter the trial ID you want to plot (Enter '0' for the last trial): "))
 
+if trial_id == 0:
+    trial_id = get_last_trial_id("InvPendDatabase.db")
+
+# Fetch and plot data for the selected trial
+dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", trial_id)
+plot_imu_data(dataToPlot)
