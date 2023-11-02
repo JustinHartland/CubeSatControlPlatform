@@ -3,7 +3,7 @@ from InvPendDatabase import InvPendDatabase
 import sqlite3
 import time
 
-#Create instance of InertialMeasurementUnit:
+#Create instance of database:
 imuDatabase = InvPendDatabase("InvPendDatabase.db")
 
 #Add a new trial to the database

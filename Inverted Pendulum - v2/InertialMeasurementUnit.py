@@ -1,3 +1,5 @@
+#Purpose: Update euler angles [x, y, z] of IMU
+
 import time
 import math
 import board
