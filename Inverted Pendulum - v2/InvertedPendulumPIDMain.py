@@ -56,7 +56,7 @@ running = True
 
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
-set_motor_velocity_thread = threading.Thread(target=pid.set_vel_thread, args=(IMU1.angle_x, node_id, bus, running, ))
+set_motor_velocity_thread = threading.Thread(target=pid.set_vel_thread, args=(IMU1, node_id, bus, running, ))
 print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
 
 #Initiate threads
