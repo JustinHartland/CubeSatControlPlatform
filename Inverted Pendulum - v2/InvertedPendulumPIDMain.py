@@ -52,6 +52,7 @@ PID = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_
 
 #Global variables
 odrive_error_detected = False
+running = True
 
 #Threads
 read_angle_thread = threading.Thread(target=PID.read_angle_thread, args=(IMU1,))
