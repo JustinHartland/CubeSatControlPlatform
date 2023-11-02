@@ -21,7 +21,7 @@ class InvertedPendulumPID:
     #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
     def set_vel_thread(self, current_angle, node_id, bus, running):
         while running:
-            velocity = self(current_angle)
+            velocity = self.pid(current_angle)
             bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
             time.sleep(0.01)
 
