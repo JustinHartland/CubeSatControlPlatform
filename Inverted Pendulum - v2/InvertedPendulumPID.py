@@ -29,14 +29,14 @@ class InvertedPendulumPID:
             time.sleep(0.01)
 
     #Thread to read in orientation angle from IMU
-    def read_angle_thread(imu_obj):
+    def read_angle_thread(self, imu_obj):
         global running
         while running:
             imu_obj.get_euler_angles()
             time.sleep(0.01)
 
     #Prints arm angle and motor velocity
-    def get_pos_vel_thread(imu_obj, node_id, bus):
+    def get_pos_vel_thread(self, simu_obj, node_id, bus):
         global running
         while running:
             for msg in bus:
