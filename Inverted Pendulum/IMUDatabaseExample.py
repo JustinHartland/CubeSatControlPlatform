@@ -1,6 +1,5 @@
 from InertialMeasurementUnit import InertialMeasurementUnit
 from InvPendDatabase import InvPendDatabase
-#import matplotlib.pyplot as plt
 import sqlite3
 import time
 
@@ -29,7 +28,3 @@ while time.time() - initialTime < 10:
     print(f"Angle X: {IMU1.angle_x} deg")
 
     time.sleep(0.01)
-
-#Plot data
-#dataToPlot = fetch_imu_data_for_trial("InvPendDatabase.db", trial_id)
-#plot_imu_data(dataToPlot)
