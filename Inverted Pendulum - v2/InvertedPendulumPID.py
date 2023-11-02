@@ -36,7 +36,7 @@ class InvertedPendulumPID:
             time.sleep(0.01)
 
     #Prints arm angle and motor velocity
-    def get_pos_vel_thread(self, simu_obj, node_id, bus):
+    def get_pos_vel_thread(self, imu_obj, node_id, bus):
         global running
         while running:
             for msg in bus:
