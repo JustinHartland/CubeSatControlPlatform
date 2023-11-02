@@ -40,7 +40,7 @@ for msg in bus:
 IMU1 = InertialMeasurementUnit()
 
 #Initialize instance of InvertedPendulumPID
-p_constant = 1
+p_constant = 0.1
 i_constant = 0
 d_constant = 0
 pid_upper_limit = 50
