@@ -27,8 +27,6 @@ class InvPendDatabase:
             angle_x REAL,
             angle_y REAL,
             angle_z REAL,
-            motor_set_velocity REAL,
-            motor_encoder_velocity REAL,
             FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
             );'''
         )
@@ -62,8 +60,8 @@ class InvPendDatabase:
         """
             Insert IMU data into imu_data table
         """
-        sql = ''' INSERT INTO imu_data(trial_id, time, raw_accel_x, raw_accel_y, raw_accel_z, raw_gyro_x, raw_gyro_y, raw_gyro_z, angle_x, angle_y, angle_z, motor_set_velocity, motor_encoder_velocity)
-                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?) '''
+        sql = ''' INSERT INTO imu_data(trial_id, time, raw_accel_x, raw_accel_y, raw_accel_z, raw_gyro_x, raw_gyro_y, raw_gyro_z, angle_x, angle_y, angle_z)
+                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, (trial_id, *data))
         self.conn.commit()

@@ -18,7 +18,7 @@ class InvertedPendulumPID:
         self.pid = PID(p, i, d, setpoint=target_angle)
         self.pid.output_limits = (lower_limit, upper_limit) #RPS bounds on motor
 
-    #Thread to set motor velocity
+    #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
     def set_vel_thread(self, current_angle, node_id, bus):
         global running
         while running:

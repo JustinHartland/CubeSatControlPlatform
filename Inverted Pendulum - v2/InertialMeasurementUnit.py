@@ -3,7 +3,6 @@
 import time
 import math
 import board
-import busio
 import adafruit_lsm9ds1
 
 class InertialMeasurementUnit:

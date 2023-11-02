@@ -1,10 +1,6 @@
 #Perform inverted pendulum PID control
 
 import time
-import board
-import adafruit_lsm9ds1
-import odrive
-import math
 import threading
 import can 
 import struct
@@ -12,7 +8,6 @@ from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 from InvertedPendulumPID import InvertedPendulumPID
 from InvPendDatabase import InvPendDatabase
-import sqlite3
 
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
