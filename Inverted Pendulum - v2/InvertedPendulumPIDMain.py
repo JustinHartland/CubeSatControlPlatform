@@ -48,16 +48,16 @@ pid_lower_limit = -50
 
 target_angle = 0
 
-PID = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
+pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
 #Global variables
 odrive_error_detected = False
 running = True
 
 #Threads
-read_angle_thread = threading.Thread(target=PID.read_angle_thread, args=(IMU1, running, ))
-set_motor_velocity_thread = threading.Thread(target=PID.set_vel_thread, args=(IMU1.angle_x, node_id, bus, running, ))
-print_thread = threading.Thread(target=PID.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
+read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
+set_motor_velocity_thread = threading.Thread(target=pid.set_vel_thread, args=(IMU1.angle_x, node_id, bus, running, ))
+print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
 
 #Initiate threads
 read_angle_thread.start()
