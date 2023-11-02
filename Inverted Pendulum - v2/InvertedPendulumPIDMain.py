@@ -51,7 +51,6 @@ target_angle = 0
 PID = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
 #Global variables
-running = True
 odrive_error_detected = False
 
 #Threads
@@ -64,6 +63,7 @@ read_angle_thread.start()
 set_motor_velocity_thread.start()
 print_thread.start()
 
+#Shutdown can bus upon ctrl+c
 try:
     while True:
         time.sleep(0.001)
