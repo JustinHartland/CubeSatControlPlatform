@@ -55,9 +55,9 @@ odrive_error_detected = False
 running = True
 
 #Threads
-read_angle_thread = threading.Thread(target=PID.read_angle_thread, args=(IMU1,))
-set_motor_velocity_thread = threading.Thread(target=PID.set_vel_thread, args=(IMU1.angle_x, node_id, bus,))
-print_thread = threading.Thread(target=PID.get_pos_vel_thread, args=(IMU1, node_id, bus))
+read_angle_thread = threading.Thread(target=PID.read_angle_thread, args=(IMU1, running, ))
+set_motor_velocity_thread = threading.Thread(target=PID.set_vel_thread, args=(IMU1.angle_x, node_id, bus, running, ))
+print_thread = threading.Thread(target=PID.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
 
 #Initiate threads
 read_angle_thread.start()

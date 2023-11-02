@@ -18,26 +18,21 @@ class InvertedPendulumPID:
         self.pid = PID(p, i, d, setpoint=target_angle)
         self.pid.output_limits = (lower_limit, upper_limit) #RPS bounds on motor
 
-        running = True
-
     #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
-    def set_vel_thread(self, current_angle, node_id, bus):
-        global running
+    def set_vel_thread(self, current_angle, node_id, bus, running):
         while running:
             velocity = self.pid(current_angle)
             bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
             time.sleep(0.01)
 
     #Thread to read in orientation angle from IMU
-    def read_angle_thread(self, imu_obj):
-        global running
+    def read_angle_thread(self, imu_obj, running):
         while running:
             imu_obj.get_euler_angles()
             time.sleep(0.01)
 
     #Prints arm angle and motor velocity
-    def get_pos_vel_thread(self, imu_obj, node_id, bus):
-        global running
+    def get_pos_vel_thread(self, imu_obj, node_id, bus, running):
         while running:
             for msg in bus:
                 if msg.arbitration_id == (node_id << 5 | 0x09):
