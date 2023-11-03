@@ -46,7 +46,7 @@ for msg in bus:
 IMU1 = InertialMeasurementUnit()
 
 #Initialize instance of InvertedPendulumPID
-p_constant = -5
+p_constant = -1
 i_constant = 0
 d_constant = 0
 
@@ -63,7 +63,7 @@ running = True
 
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
-set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running, ))
+set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
 #print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
 
 #Initiate threads
@@ -77,6 +77,7 @@ try:
         time.sleep(0.001)
 
 except KeyboardInterrupt:
+    set_torque_0(IMU1, node_id, bus, running)
     running = False
     # Signal threads to stop
     running.clear()
