@@ -23,13 +23,26 @@ class InvertedPendulumPID:
         while running:
             velocity = self.pid(imu_obj.angle_x)
             bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
-            time.sleep(0.01)
+            
+
+
+    # Function to set torque for a specific O-Drive
+    def set_torque_thread(self, imu_obj, node_id, bus, running):
+        while running:
+            torque = self.pid(imu_obj.angle_x)
+            bus.send(can.Message(
+                arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
+                data=struct.pack('<f', torque),
+                is_extended_id=False
+            ))
+            #print(f"Successfully set ODrive {node_id} to {torque} [Nm]")
+
 
     #Thread to read in orientation angle from IMU
     def read_angle_thread(self, imu_obj, running):
         while running:
             imu_obj.get_euler_angles()
-            time.sleep(0.01)
+            
 
     #Prints arm angle and motor velocity
     def get_pos_vel_thread(self, imu_obj, node_id, bus, running):
@@ -38,4 +51,4 @@ class InvertedPendulumPID:
                 if msg.arbitration_id == (node_id << 5 | 0x09):
                     pos, vel = struct.unpack('<ff', bytes(msg.data))
                     print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
-            time.sleep(0.01)
+            

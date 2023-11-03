@@ -36,6 +36,7 @@ for msg in bus:
         if state == 8:
             break
 
+
 #Initialize instance of InertialMeasurementUnit
 IMU1 = InertialMeasurementUnit()
 
@@ -43,9 +44,10 @@ IMU1 = InertialMeasurementUnit()
 p_constant = 0.5
 i_constant = 0
 d_constant = 0
-pid_upper_limit = 50
-pid_lower_limit = -50
 
+#Torque upper and lower limits (50% of O-Drive)
+pid_upper_limit = 0.63
+pid_lower_limit = -0.63
 target_angle = 0
 
 pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
@@ -56,12 +58,12 @@ running = True
 
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
-set_motor_velocity_thread = threading.Thread(target=pid.set_vel_thread, args=(IMU1, node_id, bus, running, ))
+set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running, ))
 print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
 
 #Initiate threads
 read_angle_thread.start()
-set_motor_velocity_thread.start()
+set_motor_torque_thread.start()
 print_thread.start()
 
 #Shutdown can bus upon ctrl+c
