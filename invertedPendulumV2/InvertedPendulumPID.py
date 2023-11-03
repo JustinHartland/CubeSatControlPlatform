@@ -42,10 +42,10 @@ class InvertedPendulumPID:
        # Function to set torque for a specific O-Drive
     def set_torque_0(self, node_id, bus, running):
         while running:
-            torque = 0
+            
             bus.send(can.Message(
                 arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
-                data=struct.pack('<f', torque),
+                data=struct.pack('<f', 0),
                 is_extended_id=False
             ))
             #print(f"Successfully set ODrive {node_id} to {torque} [Nm]")
