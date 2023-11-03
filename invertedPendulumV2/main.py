@@ -16,6 +16,7 @@ running.set()  # Set it to true initially
 
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
+initialTime = time.time()
 
 #Add a new trial to the database
 trial_id = invPendPIDDatabase.add_trial()
@@ -65,11 +66,13 @@ running = True
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
 #print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
+add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
 
 #Initiate threads
 read_angle_thread.start()
 set_motor_torque_thread.start()
 #print_thread.start()
+add_data_to_database()
 
 #Shutdown can bus upon ctrl+c
 try:

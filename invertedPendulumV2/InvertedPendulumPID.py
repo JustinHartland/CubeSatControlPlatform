@@ -39,7 +39,7 @@ class InvertedPendulumPID:
             time.sleep(0.001)
 
 
-       # Function to set torque for a specific O-Drive
+       # Function to set torque to 0 for a specific O-Drive
     def set_torque_0(self, node_id, bus, running):
         while running:
             
@@ -56,6 +56,7 @@ class InvertedPendulumPID:
     def read_angle_thread(self, imu_obj, running):
         while running:
             imu_obj.get_euler_angles()
+            time.sleep(0.001)
             
 
     #Prints arm angle and motor velocity
@@ -65,4 +66,10 @@ class InvertedPendulumPID:
                 if msg.arbitration_id == (node_id << 5 | 0x09):
                     pos, vel = struct.unpack('<ff', bytes(msg.data))
                     print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
+
+    def add_data_to_database(self, imu_obj, db, initial_time, trial_id, running):
+        while running:
+            imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
+            db.add_imu_data(trial_id, imuData)
+            time.sleep(0.001)
             
