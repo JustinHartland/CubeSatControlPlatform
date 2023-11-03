@@ -44,6 +44,8 @@ IMU1 = InertialMeasurementUnit()
 p_constant = 0.5
 i_constant = 0
 d_constant = 0
+
+#Torque upper and lower limits (50% of O-Drive)
 pid_upper_limit = 0.63
 pid_lower_limit = -0.63
 target_angle = 0
