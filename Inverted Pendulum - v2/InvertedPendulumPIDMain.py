@@ -73,5 +73,13 @@ try:
 
 except KeyboardInterrupt:
     running = False
+    # Signal threads to stop
+    running.clear()
+
+    # Wait for the threads to stop
+    read_angle_thread.join()
+    set_motor_torque_thread.join()
+
+    # Your code to shutdown the bus
     bus.shutdown()
     print("\nProgram terminated gracefully.")
