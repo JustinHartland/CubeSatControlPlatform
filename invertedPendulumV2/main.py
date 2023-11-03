@@ -72,7 +72,7 @@ add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(I
 read_angle_thread.start()
 set_motor_torque_thread.start()
 #print_thread.start()
-add_data_to_database()
+add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -93,6 +93,7 @@ except KeyboardInterrupt:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_motor_torque_thread.join()
+    add_data_to_database.join()
 
     # Your code to shutdown the bus
     bus.shutdown()
