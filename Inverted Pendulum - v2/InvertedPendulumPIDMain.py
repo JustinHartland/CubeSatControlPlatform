@@ -59,12 +59,12 @@ running = True
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running, ))
-print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
+#print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
 
 #Initiate threads
 read_angle_thread.start()
 set_motor_torque_thread.start()
-print_thread.start()
+#print_thread.start()
 
 #Shutdown can bus upon ctrl+c
 try:
