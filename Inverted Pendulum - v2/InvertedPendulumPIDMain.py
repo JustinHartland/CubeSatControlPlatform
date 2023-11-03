@@ -9,6 +9,11 @@ from InertialMeasurementUnit import InertialMeasurementUnit
 from InvertedPendulumPID import InvertedPendulumPID
 from InvPendDatabase import InvPendDatabase
 
+
+# Define a shared variable or event that threads can check
+running = threading.Event()
+running.set()  # Set it to true initially
+
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
 
