@@ -36,7 +36,7 @@ class InvertedPendulumPID:
                 is_extended_id=False
             ))
             #print(f"Successfully set ODrive {node_id} to {torque} [Nm]")
-            time.sleep(0.0001)
+            time.sleep(0.001)
 
     #Thread to read in orientation angle from IMU
     def read_angle_thread(self, imu_obj, running):
