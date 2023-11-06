@@ -8,31 +8,10 @@ from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 from InvertedPendulumPID import InvertedPendulumPID
 from InvPendDatabase import InvPendDatabase
-from queue import Queue
 
 # Define a shared variable or event that threads can check
 running = threading.Event()
 running.set()  # Set it to true initially
-
-#Create queue for database operations
-db_operations_queue = Queue()
-
-def process_db_tasks(task_queue, running):
-    while running.is_set() or not db_operations_queue.empty():
-        try:
-            # Try to get a task, block for a certain time if the queue is empty
-            func, args = task_queue.get(timeout=1)  # Wait for 1 second for a task
-            func(*args)
-            task_queue.task_done()  # Mark the task as done
-        except task_queue.Empty:
-            # No task to process
-            continue
-        # You might want to add some exception handling here as well
-
-def add_db_task(self, func, args):
-    db_operations_queue.put((func, args))
-
-
 
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
@@ -76,7 +55,7 @@ pid_upper_limit = 0.63
 pid_lower_limit = -0.63
 target_angle = 0
 
-pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit, add_db_task_callback=add_db_task)
+pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
 #Global variables
 odrive_error_detected = False
@@ -85,15 +64,13 @@ odrive_error_detected = False
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
 #print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
-db_thread = threading.Thread(target=process_db_tasks, args=(InvPendDatabase, running))
-add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
+#add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
 
 #Initiate threads
 read_angle_thread.start()
 set_motor_torque_thread.start()
 #print_thread.start()
-db_thread.start()
-add_data_to_database.start()
+#add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -106,15 +83,12 @@ except KeyboardInterrupt:
 
     print("\nThreads cleared!")
 
-    db_operations_queue.put(None)
-
 finally:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_motor_torque_thread.join()
     #print_thread.join()
-    db_thread.join()
-    add_data_to_database.join()
+    #add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [Nm]")
