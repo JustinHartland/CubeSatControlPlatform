@@ -69,13 +69,13 @@ class InvertedPendulumPID:
                     pos, vel = struct.unpack('<ff', bytes(msg.data))
                     print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
 
-    def add_data_to_database(self, imu_obj, db_path, initial_time, trial_id, running):
+    def add_data_to_database(self, imu_obj, db_path, db, initial_time, trial_id, running):
         while running.is_set():
             #Inside this loop, a new connection is created on each iteration
             with sqlite3.connect(db_path) as conn:
                 cursor = conn.cursor()
                 imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
-                db_path.add_imu_data(trial_id, imuData)
+                db.add_imu_data(trial_id, imuData)
                 can.commit()
                 time.sleep(0.001)
             
