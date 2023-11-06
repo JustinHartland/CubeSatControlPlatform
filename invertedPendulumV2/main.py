@@ -59,7 +59,6 @@ pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_
 
 #Global variables
 odrive_error_detected = False
-running = True
 
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
@@ -81,7 +80,7 @@ try:
 except KeyboardInterrupt:
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(0), 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [rps]")
-    running = False
+
     # Signal threads to stop
     running.clear()
 
