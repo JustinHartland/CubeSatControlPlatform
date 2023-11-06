@@ -9,7 +9,6 @@ from InertialMeasurementUnit import InertialMeasurementUnit
 from InvertedPendulumPID import InvertedPendulumPID
 from InvPendDatabase import InvPendDatabase
 
-
 # Define a shared variable or event that threads can check
 running = threading.Event()
 running.set()  # Set it to true initially
@@ -66,13 +65,13 @@ running = True
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
 #print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
-add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
+#add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
 
 #Initiate threads
 read_angle_thread.start()
 set_motor_torque_thread.start()
 #print_thread.start()
-add_data_to_database.start()
+#add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -89,7 +88,7 @@ except KeyboardInterrupt:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_motor_torque_thread.join()
-    add_data_to_database.join()
+    #add_data_to_database.join()
 
     # Your code to shutdown the bus
     bus.shutdown()
