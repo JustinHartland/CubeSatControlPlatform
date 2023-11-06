@@ -41,8 +41,6 @@ for msg in bus:
         if state == 8:
             break
 
-bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(0), 0.0), is_extended_id=False))
-
 
 #Initialize instance of InertialMeasurementUnit
 IMU1 = InertialMeasurementUnit()
@@ -83,6 +81,8 @@ except KeyboardInterrupt:
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(0), 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [rps]")
 
+    time.sleep(0.1)
+    
     # Signal threads to stop
     running.clear()
 
