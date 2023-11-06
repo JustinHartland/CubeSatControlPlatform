@@ -41,6 +41,8 @@ for msg in bus:
         if state == 8:
             break
 
+bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(0), 0.0), is_extended_id=False))
+
 
 #Initialize instance of InertialMeasurementUnit
 IMU1 = InertialMeasurementUnit()
