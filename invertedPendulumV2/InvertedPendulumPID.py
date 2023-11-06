@@ -72,6 +72,6 @@ class InvertedPendulumPID:
     def add_data_to_database(self, imu_obj, db, initial_time, trial_id, running):
         while running.is_set():
             imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
-            self.add_db_task('add_imu_data', (trial_id, imuData))
+            self.add_db_task(db.add_imu_data, (trial_id, imuData))
             time.sleep(0.001)
             

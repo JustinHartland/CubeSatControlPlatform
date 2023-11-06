@@ -29,11 +29,12 @@ def db_thread_worker(db_instance, running):
         method, args = task
         getattr(db_instance, method)(*args)
         db_operations_queue.task_done()
-        
+
     db_instance.conn.close() #Close the connection when done
 
 def add_db_task(method, args):
     db_operations_queue.put((method, args))
+
 
 
 #Create instance of database:
