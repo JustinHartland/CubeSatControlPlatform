@@ -78,11 +78,6 @@ try:
         time.sleep(0.001)
 
 except KeyboardInterrupt:
-    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
-    print(f"Successfully set ODrive {node_id} to 0 [rps]")
-
-    time.sleep(0.1)
-
     # Signal threads to stop
     running.clear()
 
@@ -91,6 +86,11 @@ finally:
     read_angle_thread.join()
     set_motor_torque_thread.join()
     # add_data_to_database.join() - If you uncomment this, remember to join this thread too.
+
+    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
+    print(f"Successfully set ODrive {node_id} to 0 [rps]")
+
+    time.sleep(0.1)
 
     # Shutdown the bus in the finally block to ensure it's always executed
     bus.shutdown()
