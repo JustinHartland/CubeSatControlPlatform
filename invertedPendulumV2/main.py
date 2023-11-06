@@ -90,9 +90,7 @@ finally:
     # add_data_to_database.join() - If you uncomment this, remember to join this thread too.
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
-    print(f"Successfully set ODrive {node_id} to 0 [rps]")
-
-    time.sleep(0.1)
+    print(f"Successfully set ODrive {node_id} to 0 [Nm]")
 
     # Shutdown the bus in the finally block to ensure it's always executed
     bus.shutdown()
