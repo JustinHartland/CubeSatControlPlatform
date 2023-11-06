@@ -78,6 +78,6 @@ class InvertedPendulumPID:
                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?) '''
                 cursor = conn.cursor()
                 cursor.execute(sql, (trial_id, *imuData))
-                can.commit()
+                db.conn.commit()
                 time.sleep(0.001)
             
