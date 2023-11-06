@@ -17,23 +17,20 @@ running.set()  # Set it to true initially
 #Create queue for database operations
 db_operations_queue = Queue()
 
-def db_thread_worker(db_instance, running):
+def process_db_tasks(task_queue, running):
     while running.is_set() or not db_operations_queue.empty():
-        #Get the next task
-        task = db_operations_queue.get()
-        if task is None:
-            #Sentinel value to indicate the thread should exit
-            break
+        try:
+            # Try to get a task, block for a certain time if the queue is empty
+            func, args = task_queue.get(timeout=1)  # Wait for 1 second for a task
+            func(*args)
+            task_queue.task_done()  # Mark the task as done
+        except task_queue.Empty:
+            # No task to process
+            continue
+        # You might want to add some exception handling here as well
 
-        #Unpack task and execute it
-        method, args = task
-        getattr(db_instance, method)(*args)
-        db_operations_queue.task_done()
-
-    db_instance.conn.close() #Close the connection when done
-
-def add_db_task(method, args):
-    db_operations_queue.put((method, args))
+def add_db_task(self, func, args):
+    db_operations_queue.put((func, args))
 
 
 
@@ -88,7 +85,7 @@ odrive_error_detected = False
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
 #print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
-db_thread = threading.Thread(target=db_thread_worker, args=(InvPendDatabase, running))
+db_thread = threading.Thread(target=process_db_tasks, args=(InvPendDatabase, running))
 add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
 
 #Initiate threads
