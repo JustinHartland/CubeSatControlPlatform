@@ -66,13 +66,13 @@ class InvPendDatabase:
         self.conn.commit()
         return cur.lastrowid
 
-    def add_imu_data(self, trial_id, data, conn):
+    def add_imu_data(self, trial_id, data):
         """
             Insert IMU data into imu_data table
         """
         sql = ''' INSERT INTO imu_data(trial_id, time, raw_accel_x, raw_accel_y, raw_accel_z, raw_gyro_x, raw_gyro_y, raw_gyro_z, angle_x, angle_y, angle_z)
                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?) '''
-        cur = conn.cursor()
+        cur = self.conn.cursor()
         cur.execute(sql, (trial_id, *data))
         self.conn.commit()
         return cur.lastrowid

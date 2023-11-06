@@ -8,10 +8,32 @@ from simple_pid import PID
 from InertialMeasurementUnit import InertialMeasurementUnit
 from InvertedPendulumPID import InvertedPendulumPID
 from InvPendDatabase import InvPendDatabase
+from queue import Queue
 
 # Define a shared variable or event that threads can check
 running = threading.Event()
 running.set()  # Set it to true initially
+
+#Create queue for database operations
+db_operations_queue = Queue()
+
+def db_thread_worker(db_instance, running)
+    while running.is_set() or not db_operations_queue.empty():
+        #Get the next task
+        task = db_operations_queue.get()
+        if task is None:
+            #Sentinel value to indicate the thread should exit
+            break
+
+        #Unpack task and execute it
+        method, args = task
+        getattr(db_instance, method)(*args)
+        db_operations_queue.task_done()
+    db_instance.conn.close() #Close the connection when done
+
+def add_db_task(method, args):
+    db_operations_queue.put((method, args))
+
 
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
@@ -64,12 +86,14 @@ odrive_error_detected = False
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
 #print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
+db_thread = threading.Thread(target=db_thread_worker, args=(InvPendDatabase, running))
 add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
 
 #Initiate threads
 read_angle_thread.start()
 set_motor_torque_thread.start()
 #print_thread.start()
+db_thread.start()
 add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
@@ -83,11 +107,14 @@ except KeyboardInterrupt:
 
     print("\nThreads cleared!")
 
+    db_operations_queue.put(None)
+
 finally:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_motor_torque_thread.join()
     #print_thread.join()
+    db_thread.join()
     add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
