@@ -80,12 +80,8 @@ try:
         time.sleep(0.001)
 
 except KeyboardInterrupt:
-    bus.send(can.Message(
-                arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
-                data=struct.pack('<f', 0),
-                is_extended_id=False
-            ))
-    print(f"Successfully set ODrive {node_id} to 0 [Nm]")
+    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(0), 0.0), is_extended_id=False))
+    print(f"Successfully set ODrive {node_id} to 0 [rps]")
     running = False
     # Signal threads to stop
     running.clear()
