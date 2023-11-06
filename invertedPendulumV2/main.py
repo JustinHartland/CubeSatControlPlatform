@@ -81,6 +81,8 @@ except KeyboardInterrupt:
     # Signal threads to stop
     running.clear()
 
+    print("Threads cleared!")
+
 finally:
     # Wait for the threads to stop
     read_angle_thread.join()
