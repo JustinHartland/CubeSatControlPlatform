@@ -73,9 +73,11 @@ class InvertedPendulumPID:
         while running.is_set():
             #Inside this loop, a new connection is created on each iteration
             with sqlite3.connect(db_path) as conn:
-                cursor = conn.cursor()
                 imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
-                db.add_imu_data(trial_id, imuData)
+                sql = ''' INSERT INTO imu_data(trial_id, time, raw_accel_x, raw_accel_y, raw_accel_z, raw_gyro_x, raw_gyro_y, raw_gyro_z, angle_x, angle_y, angle_z)
+                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?) '''
+                cursor = conn.cursor()
+                cursor.execute(sql, (trial_id, *imuData))
                 can.commit()
                 time.sleep(0.001)
             
