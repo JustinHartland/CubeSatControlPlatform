@@ -6,6 +6,7 @@ import time
 import can
 from InertialMeasurementUnit import InertialMeasurementUnit
 from InvPendDatabase import InvPendDatabase
+import sqlite3
 
 class InvertedPendulumPID:
     def __init__(self, p, i, d, target_angle, lower_limit, upper_limit):
@@ -70,7 +71,11 @@ class InvertedPendulumPID:
 
     def add_data_to_database(self, imu_obj, db, initial_time, trial_id, running):
         while running.is_set():
-            imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
-            db.add_imu_data(trial_id, imuData)
-            time.sleep(0.001)
+            #Inside this loop, a new connection is created on each iteration
+            with sqlite3.connect(db) as conn:
+                cursor = conn.cursor()
+                imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
+                db.add_imu_data(trial_id, imuData)
+                can.commit()
+                time.sleep(0.001)
             
