@@ -84,11 +84,12 @@ except KeyboardInterrupt:
     # Signal threads to stop
     running.clear()
 
+finally:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_motor_torque_thread.join()
-    #add_data_to_database.join()
+    # add_data_to_database.join() - If you uncomment this, remember to join this thread too.
 
-    # Your code to shutdown the bus
+    # Shutdown the bus in the finally block to ensure it's always executed
     bus.shutdown()
     print("\nProgram terminated gracefully.")
