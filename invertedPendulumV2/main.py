@@ -46,7 +46,7 @@ for msg in bus:
 IMU1 = InertialMeasurementUnit()
 
 #Initialize instance of InvertedPendulumPID
-p_constant = -1
+p_constant = -0.1
 i_constant = 0
 d_constant = 0
 
@@ -82,7 +82,7 @@ except KeyboardInterrupt:
     print(f"Successfully set ODrive {node_id} to 0 [rps]")
 
     time.sleep(0.1)
-    
+
     # Signal threads to stop
     running.clear()
 
