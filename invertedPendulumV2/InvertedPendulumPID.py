@@ -5,10 +5,9 @@ import struct
 import time
 import can
 from InertialMeasurementUnit import InertialMeasurementUnit
-from main import add_db_task
 
 class InvertedPendulumPID:
-    def __init__(self, p, i, d, target_angle, lower_limit, upper_limit):
+    def __init__(self, p, i, d, target_angle, lower_limit, upper_limit, add_db_task_callback):
         
         #Setting PID constants
         self.p_parameter = p
@@ -18,6 +17,8 @@ class InvertedPendulumPID:
         #Setup PID controller
         self.pid = PID(p, i, d, setpoint=target_angle)
         self.pid.output_limits = (lower_limit, upper_limit) #RPS bounds on motor
+
+        self.add_db_task = add_db_task_callback
 
     #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
     def set_vel_thread(self, imu_obj, node_id, bus, running):
@@ -71,6 +72,6 @@ class InvertedPendulumPID:
     def add_data_to_database(self, imu_obj, db, initial_time, trial_id, running):
         while running.is_set():
             imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
-            add_db_task('add_imu_data', (trial_id, imuData))
+            self.add_db_task('add_imu_data', (trial_id, imuData))
             time.sleep(0.001)
             

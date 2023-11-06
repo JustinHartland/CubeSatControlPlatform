@@ -77,7 +77,7 @@ pid_upper_limit = 0.63
 pid_lower_limit = -0.63
 target_angle = 0
 
-pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
+pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit, add_db_task_callback=add_db_task)
 
 #Global variables
 odrive_error_detected = False
