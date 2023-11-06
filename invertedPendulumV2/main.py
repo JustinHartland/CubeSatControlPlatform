@@ -63,14 +63,14 @@ odrive_error_detected = False
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
 set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(IMU1, node_id, bus, running))
-print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
-#add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
+#print_thread = threading.Thread(target=pid.get_pos_vel_thread, args=(IMU1, node_id, bus, running, ))
+add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, invPendPIDDatabase, initialTime, trial_id, running, ))
 
 #Initiate threads
 read_angle_thread.start()
 set_motor_torque_thread.start()
-print_thread.start()
-#add_data_to_database.start()
+#print_thread.start()
+add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -87,8 +87,8 @@ finally:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_motor_torque_thread.join()
-    print_thread.join()
-    # add_data_to_database.join() - If you uncomment this, remember to join this thread too.
+    #print_thread.join()
+    add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [Nm]")
