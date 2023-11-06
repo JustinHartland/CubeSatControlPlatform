@@ -81,7 +81,7 @@ except KeyboardInterrupt:
     # Signal threads to stop
     running.clear()
 
-    print("Threads cleared!")
+    print("\nThreads cleared!")
 
 finally:
     # Wait for the threads to stop

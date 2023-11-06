@@ -68,8 +68,10 @@ class InvertedPendulumPID:
                     print(f"Roll: {imu_obj.angle_x:.2f} degrees, vel: {vel:.3f} [turns/s]")
 
     def add_data_to_database(self, imu_obj, db, initial_time, trial_id, running):
+        conn = db.get_connection()  # Get a new connection for the thread
+
         while running.is_set():
             imuData = [time.time()-initial_time, *imu_obj.rawAccelArray, *imu_obj.rawGyroArray, imu_obj.angle_x, imu_obj.angle_y, imu_obj.angle_z]
-            db.add_imu_data(trial_id, imuData)
+            db.add_imu_data(trial_id, imuData, conn)
             time.sleep(0.001)
             
