@@ -17,7 +17,7 @@ running.set()  # Set it to true initially
 #Create queue for database operations
 db_operations_queue = Queue()
 
-def db_thread_worker(db_instance, running)
+def db_thread_worker(db_instance, running):
     while running.is_set() or not db_operations_queue.empty():
         #Get the next task
         task = db_operations_queue.get()
