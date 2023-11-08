@@ -15,7 +15,6 @@ running.set()  # Set it to true initially
 
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
-print(f"Set initial time at: {initialTime} s")
 
 #Add a new trial to the database
 trial_id = invPendPIDDatabase.add_trial()
