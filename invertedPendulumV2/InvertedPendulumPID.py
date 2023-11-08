@@ -34,7 +34,7 @@ class InvertedPendulumPID:
             torque = self.pid(imu_obj.angle_x)
             bus.send(can.Message(
                 arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
-                data=struct.pack('<f', 0),
+                data=struct.pack('<f', torque),
                 is_extended_id=False
             ))
             #print(f"Successfully set ODrive {node_id} to {torque} [Nm]")
