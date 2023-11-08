@@ -57,7 +57,7 @@ target_angle = 0
 pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
 #Pause to remove lock
-print("\nRemove lock mechanism\nTime Remaining:\n")
+print("\nRemove lock mechanism. Time Remaining:\n")
 time_remaining = 5
 
 while (time_remaining != 0):
