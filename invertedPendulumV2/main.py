@@ -52,7 +52,7 @@ d_constant = 0
 #Torque upper and lower limits (50% of O-Drive)
 pid_upper_limit = 0.63
 pid_lower_limit = -0.63
-target_angle = [-3, 3]
+target_angle = 0
 
 pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
