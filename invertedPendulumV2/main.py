@@ -15,7 +15,6 @@ running.set()  # Set it to true initially
 
 #Create instance of database:
 invPendPIDDatabase = InvPendDatabase("InvPendIMUatabase.db")
-initialTime = time.time()
 print(f"Set initial time at: {initialTime} s")
 
 #Add a new trial to the database
@@ -60,6 +59,7 @@ pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_
 
 #Global variables
 odrive_error_detected = False
+initialTime = time.time()
 
 #Threads
 read_angle_thread = threading.Thread(target=pid.read_angle_thread, args=(IMU1, running, ))
