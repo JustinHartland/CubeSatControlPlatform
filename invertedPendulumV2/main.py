@@ -56,6 +56,10 @@ target_angle = 0
 
 pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
+#Pause to remove lock
+print("\nRemove lock mechanism\n")
+time.sleep(5)
+
 #Global variables
 odrive_error_detected = False
 initialTime = time.time()
