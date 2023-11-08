@@ -45,7 +45,7 @@ for msg in bus:
 IMU1 = InertialMeasurementUnit()
 
 #Initialize instance of InvertedPendulumPID
-p_constant = -0.1
+p_constant = -0.01
 i_constant = 0
 d_constant = 0
 
@@ -57,8 +57,13 @@ target_angle = 0
 pid = InvertedPendulumPID(p_constant, i_constant, d_constant, target_angle, pid_lower_limit, pid_upper_limit)
 
 #Pause to remove lock
-print("\nRemove lock mechanism\n")
-time.sleep(5)
+print("\nRemove lock mechanism\nTime Remaining:\n")
+time_remaining = 5
+
+while (time_remaining != 0):
+    print(f"{time_remaining} s")
+    time_remaining = time_remaining - 1
+    time.sleep(1)
 
 #Global variables
 odrive_error_detected = False
