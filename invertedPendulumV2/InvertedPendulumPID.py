@@ -80,4 +80,3 @@ class InvertedPendulumPID:
                 cursor.execute(sql, (trial_id, *imuData))
                 conn.commit()
                 time.sleep(0.001)
-            
