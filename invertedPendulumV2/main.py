@@ -76,6 +76,7 @@ set_motor_torque_thread = threading.Thread(target=pid.set_torque_thread, args=(I
 add_data_to_database = threading.Thread(target=pid.add_data_to_database, args=(IMU1, 'InvPendIMUatabase.db', invPendPIDDatabase, time.time()-initialTime, trial_id, running, ))
 
 #Initiate threads
+print("\nPID Active")
 read_angle_thread.start()
 set_motor_torque_thread.start()
 #print_thread.start()
