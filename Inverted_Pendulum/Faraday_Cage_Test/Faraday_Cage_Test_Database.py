@@ -21,7 +21,7 @@ class Faraday_Cage_Test_Database:
             angle_x REAL,
             angle_y REAL,
             angle_z REAL,
-            encoder_velcity REAL,
+            encoder_velocity REAL,
             velocity_setpoint REAL,
             FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
             );'''
