@@ -18,15 +18,8 @@ class InvPendFaradayTestDatabase:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             trial_id INTEGER,
             time REAL,
-            raw_accel_x,
-            raw_accel_y,
-            raw_accel_z,
-            raw_gyro_x,
-            raw_gyro_y,
-            raw_gyro_z,
-            angle_x REAL,
-            angle_y REAL,
-            angle_z REAL,
+            torque_setpoint REAL,
+            encoder_position REAL,
             FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
             );'''
         )
@@ -70,8 +63,8 @@ class InvPendFaradayTestDatabase:
         """
             Insert IMU data into imu_data table
         """
-        sql = ''' INSERT INTO imu_data(trial_id, time, raw_accel_x, raw_accel_y, raw_accel_z, raw_gyro_x, raw_gyro_y, raw_gyro_z, angle_x, angle_y, angle_z)
-                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?) '''
+        sql = ''' INSERT INTO imu_data(trial_id, time, torque_setpoint, encoder_position)
+                  VALUES(?, ?, ?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, (trial_id, *data))
         self.conn.commit()
