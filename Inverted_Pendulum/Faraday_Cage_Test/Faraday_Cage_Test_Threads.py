@@ -12,8 +12,12 @@ class Faraday_Cage_Test_Threads:
         self.encoder_velocity = 0
 
     #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
-    def set_vel_thread(self, node_id, bus, velocity, running):
+    def set_vel_thread(self, node_id, bus, velocity, initialTime, running):
         while running.is_set():
+            if (time.time() - initialTime) > 5:
+                velocity = 5
+            if (time.time() - initialTime) > 10:
+                velocity = 10
             bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
             time.sleep(0.001)
 
