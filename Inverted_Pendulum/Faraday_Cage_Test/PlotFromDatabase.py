@@ -53,8 +53,8 @@ def plot_imu_data(data):
 trial_id = int(input("Please enter the trial ID you want to plot (Enter '0' for the last trial): "))
 
 if trial_id == 0:
-    trial_id = get_last_trial_id("InvPendIMUatabase.db")
+    trial_id = get_last_trial_id("Faraday_Cage_Test_Database.db")
 
 # Fetch and plot data for the selected trial
-dataToPlot = fetch_imu_data_for_trial("InvPendIMUatabase.db", trial_id)
+dataToPlot = fetch_imu_data_for_trial("Faraday_Cage_Test_Database.db", trial_id)
 plot_imu_data(dataToPlot)
