@@ -4,8 +4,6 @@ from simple_pid import PID
 import struct
 import time
 import can
-from InertialMeasurementUnit import InertialMeasurementUnit
-from Faraday_Cage_Test_Database import Faraday_Cage_Test_Database
 import sqlite3
 
 class Faraday_Cage_Test_Threads:
