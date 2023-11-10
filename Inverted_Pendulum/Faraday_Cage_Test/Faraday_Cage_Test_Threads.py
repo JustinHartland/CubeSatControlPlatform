@@ -29,7 +29,7 @@ class Faraday_Cage_Test_Threads:
             message = bus.recv()  # Blocking call
             if message.arbitration_id == (node_id << 5 | 0x09):  # Replace with the correct response ID
                 # Parse the data to get encoder estimates
-                position, velocity = message.data
+                position, velocity = struct.unpack('<ff', message.data)
                 self.encoder_position = position
                 self.encoder_velocity = velocity
 
