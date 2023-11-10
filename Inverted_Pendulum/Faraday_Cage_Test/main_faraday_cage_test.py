@@ -49,7 +49,7 @@ threads = Faraday_Cage_Test_Threads()
 #Global variables
 odrive_error_detected = False
 initialTime = time.time()
-velocity_setpoint = 0
+velocity_setpoint = 5
 
 #Threads
 read_angle_thread = threading.Thread(target=threads.read_angle_thread, args=(IMU1, running, ))
