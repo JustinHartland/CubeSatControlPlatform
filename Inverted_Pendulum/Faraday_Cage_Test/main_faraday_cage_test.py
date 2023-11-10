@@ -69,7 +69,7 @@ try:
     while True:
         time.sleep(0.001)
 
-except KeyboardInterrupt or (time.time() - initialTime) > 15:
+except KeyboardInterrupt:
     # Signal threads to stop
     running.clear()
 
