@@ -82,7 +82,7 @@ finally:
     #get_encoder_vel_thread.join()
     add_data_to_database.join()
 
-    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x09), data=struct.pack('<f', 0.0), is_extended_id=False))
+    bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(0), 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [rev/s]")
 
     # Shutdown the bus in the finally block to ensure it's always executed
