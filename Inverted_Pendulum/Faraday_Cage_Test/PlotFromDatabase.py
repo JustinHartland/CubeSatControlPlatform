@@ -32,7 +32,7 @@ def plot_imu_data(data):
     plt.plot(times, angles_x, label='Angle X')
 
     # Setting y-axis limits and adding grid lines for y-axis
-    plt.ylim(-180, 180)
+    plt.ylim(-30, 30)
     plt.yticks(range(-180, 181, 30))  # Setting y-ticks every 30 degrees
 
     # Adding grid lines for x-axis
