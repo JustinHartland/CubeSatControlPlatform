@@ -54,14 +54,14 @@ velocity_setpoint = 5
 #Threads
 read_angle_thread = threading.Thread(target=threads.read_angle_thread, args=(IMU1, running, ))
 set_velocity_thread = threading.Thread(target = threads.set_vel_thread, args=(node_id, bus, velocity_setpoint, running, ))
-get_encoder_vel_thread = threading.Thread(target = threads.get_vel_thread, args=(node_id, bus, running, ))
+#get_encoder_vel_thread = threading.Thread(target = threads.get_vel_thread, args=(node_id, bus, running, ))
 add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=(IMU1, 'Faraday_Cage_Test_Database.db', initialTime, trial_id, velocity_setpoint, running, ))
 
 #Initiate threads
 print("\Test Active")
 read_angle_thread.start()
 set_velocity_thread.start()
-get_encoder_vel_thread.start()
+#get_encoder_vel_thread.start()
 add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
@@ -79,7 +79,7 @@ finally:
     # Wait for the threads to stop
     read_angle_thread.join()
     set_velocity_thread.join()
-    get_encoder_vel_thread.join()
+    #get_encoder_vel_thread.join()
     add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
