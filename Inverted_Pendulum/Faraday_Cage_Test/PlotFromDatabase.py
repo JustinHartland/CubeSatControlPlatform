@@ -95,8 +95,8 @@ def plot_imu_data(data):
     plt.plot(times, encoder_velocities, 'r', label='Encoder Velocity')  # Plotting encoder_velocity in red
 
     # Setting y-axis limits and adding grid lines for y-axis
-    plt.ylim(-30, 30)
-    plt.yticks(range(-30, 30, 5))  # Setting y-ticks
+    plt.ylim(-50, 50)
+    plt.yticks(range(-50, 50, 5))  # Setting y-ticks
 
     # Adding grid lines for x-axis
     x_ticks_interval = (max(times) - min(times)) / 10
