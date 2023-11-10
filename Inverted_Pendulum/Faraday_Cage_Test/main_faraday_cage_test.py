@@ -53,7 +53,7 @@ velocity_setpoint = 5
 
 #Threads
 read_angle_thread = threading.Thread(target=threads.read_angle_thread, args=(IMU1, running, ))
-set_velocity_thread = threading.Thread(target = threads.set_vel_thread, arg=(node_id, bus, velocity_setpoint, running, ))
+set_velocity_thread = threading.Thread(target = threads.set_vel_thread, args=(node_id, bus, velocity_setpoint, running, ))
 get_encoder_vel_thread = threading.Thread(target = threads.get_vel_thread, args=(node_id, bus, running, ))
 add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=(IMU1, 'Faraday_Cage_Test_Database.db', initialTime, trial_id, velocity_setpoint, running, ))
 
