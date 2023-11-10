@@ -33,7 +33,7 @@ def plot_imu_data(data):
 
     # Setting y-axis limits and adding grid lines for y-axis
     plt.ylim(-30, 30)
-    plt.yticks(range(-180, 181, 30))  # Setting y-ticks every 30 degrees
+    plt.yticks(range(-30, 30, 5))  # Setting y-ticks every 30 degrees
 
     # Adding grid lines for x-axis
     x_ticks_interval = (max(times) - min(times)) / 10
