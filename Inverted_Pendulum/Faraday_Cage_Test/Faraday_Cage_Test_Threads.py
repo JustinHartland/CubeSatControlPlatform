@@ -15,6 +15,7 @@ class Faraday_Cage_Test_Threads:
     def set_vel_thread(self, node_id, bus, velocity, running):
         while running.is_set():
             bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
+            time.sleep(0.001)
 
     #Thread to read in orientation angle from IMU
     def read_angle_thread(self, imu_obj, running):
