@@ -67,6 +67,10 @@ add_data_to_database.start()
 #Shutdown can bus upon ctrl+c
 try:
     while True:
+        # Check for elapsed time
+        if (time.time() - initialTime) > 15:
+            print("15 seconds have passed. Terminating the program.")
+            break
         time.sleep(0.001)
 
 except KeyboardInterrupt:
