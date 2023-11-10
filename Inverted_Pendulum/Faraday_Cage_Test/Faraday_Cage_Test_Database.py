@@ -1,7 +1,7 @@
 from sqlite3 import Error
 import sqlite3
 
-class InvPendFaradayTestDatabase:
+class Faraday_Cage_Test_Database:
 
     def __init__(self, database_name):
         self.database_name = database_name
@@ -18,8 +18,11 @@ class InvPendFaradayTestDatabase:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             trial_id INTEGER,
             time REAL,
-            torque_setpoint REAL,
-            encoder_position REAL,
+            angle_x REAL,
+            angle_y REAL,
+            angle_z REAL,
+            encoder_velcity REAL,
+            velocity_setpoint REAL
             FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
             );'''
         )
@@ -63,8 +66,8 @@ class InvPendFaradayTestDatabase:
         """
             Insert IMU data into imu_data table
         """
-        sql = ''' INSERT INTO imu_data(trial_id, time, torque_setpoint, encoder_position)
-                  VALUES(?, ?, ?, ?) '''
+        sql = ''' INSERT INTO imu_data(trial_id, time, angle_x, angle_y, angle_z, encoder_velocity, velocity_setpoint)
+                  VALUES(?, ?, ?, ?, ?, ?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, (trial_id, *data))
         self.conn.commit()

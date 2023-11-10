@@ -1,16 +1,19 @@
-#Purpose: define threads needed to operate inverted pendulum
+#Purpose: define threads needed to test torque reaction times
 
-from simple_pid import PID
 import struct
 import time
 import can
-from InvPendFaradayTestDatabase import InvPendFaradayTestDatabase
 import sqlite3
 
-class FaradayTestingThreads:
+class TorqueReactionTestThreads:
     def __init__(self):
         self.encoder_position = 0
         self.encoder_velocity = 0
+
+    #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
+    def set_vel_thread(self, node_id, bus, velocity, running):
+        while running.is_set():
+            bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
 
     # Function to set torque for a specific O-Drive
     def set_torque_thread(self, node_id, bus, torque_setpoint, initiation_time, running):
@@ -28,7 +31,7 @@ class FaradayTestingThreads:
             #print(f"Successfully set ODrive {node_id} to {torque} [Nm]")
             time.sleep(0.001)
 
-    #Prints arm angle and motor velocity
+    #Reports encoder position
     def get_pos_thread(self, node_id, bus, running):
         while running.is_set():
             message = bus.recv()  # Blocking call

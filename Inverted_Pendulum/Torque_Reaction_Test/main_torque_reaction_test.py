@@ -4,18 +4,18 @@ import time
 import threading
 import can 
 import struct
-from FaradayTestingThreads import FaradayTestingThreads
-from InvPendFaradayTestDatabase import InvPendFaradayTestDatabase
+from TorqueReactionTestThreads import TorqueReactionTestThreads
+from TorqueReactionTestDatabase import TorqueReactionTestDatabase
 
 # Define a shared variable or event that threads can check
 running = threading.Event()
 running.set()  # Set it to true initially
 
 #Create instance of database:
-invPendFaradayTestDatabase = InvPendFaradayTestDatabase("InvPendFaradayTestDatabase.db")
+torque_reaction_test_database = TorqueReactionTestDatabase("TorqueReactionTestDatabase.db")
 
 #Add a new trial to the database
-trial_id = invPendFaradayTestDatabase.add_trial()
+trial_id = torque_reaction_test_database.add_trial()
 print(f"Added Trial with ID: {trial_id}")
 
 #CAN initialization
@@ -42,21 +42,24 @@ for msg in bus:
 odrive_error_detected = False
 initialTime = time.time()
 torque_setpoint = 0.5
+velocity_setpoint = 5
 
 #Request encoder position from ODrive
 msg = can.Message(arbitration_id=node_id, data=[0x09], is_extended_id=False)
 bus.send(msg)
 
 #setup threads
-threads = FaradayTestingThreads()
+threads = TorqueReactionTestThreads()
 
 #Threads
+#set_velocity_thread = threading.Thread(target = threads.set_torque_thread, args=(node_id, bus, velocity_setpoint, running))
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
 print_thread = threading.Thread(target=threads.get_pos_thread, args=(node_id, bus, running, ))
-add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('InvPendFaradayTestDatabase.db', initialTime, torque_setpoint, trial_id, running, ))
+add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, torque_setpoint, trial_id, running, ))
 
 #Initiate threads
 print("\nTest Active")
+#set_velocity_thread.start()
 set_motor_torque_thread.start()
 print_thread.start()
 add_data_to_database.start()
@@ -74,6 +77,8 @@ except KeyboardInterrupt:
 
 finally:
     # Wait for the threads to stop
+
+    #set_velocity_thread.join()
     set_motor_torque_thread.join()
     print_thread.join()
     add_data_to_database.join()
