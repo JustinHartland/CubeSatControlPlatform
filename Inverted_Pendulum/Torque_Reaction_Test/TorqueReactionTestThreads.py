@@ -16,11 +16,11 @@ class TorqueReactionTestThreads:
             bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
 
     # Function to set torque for a specific O-Drive
-    def set_torque_thread(self, node_id, bus, torque_setpoint, initiation_time, running):
+    def set_torque_thread(self, node_id, bus, torque_setpoint, initial_time, running):
         while running.is_set():
 
             #Switch sign of torque after 5 seconds
-            if (time.time() - initiation_time) > 5:
+            if (time.time() - initial_time) > 5:
                 torque_setpoint = torque_setpoint * -1
 
             bus.send(can.Message(
