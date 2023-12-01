@@ -37,8 +37,6 @@ class TorqueReactionTestThreads:
                     is_extended_id=False
                 ))
 
-            print('hellO')
-
             time.sleep(0.001)
 
     #Reports encoder position
@@ -48,7 +46,7 @@ class TorqueReactionTestThreads:
             if message.arbitration_id == (node_id << 5 | 0x1c):  # Replace with the correct response ID
 
                 # Parse the data to get encoder estimates
-                torque_setpoint, torque_estimate = message.data
+                torque_setpoint, torque_estimate = struct.unpack('<ff', message.data)
 
                 self.torque_setpoint = torque_setpoint
                 self.torque_estimate = torque_estimate
