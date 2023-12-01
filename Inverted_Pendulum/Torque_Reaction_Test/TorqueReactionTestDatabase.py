@@ -14,12 +14,12 @@ class TorqueReactionTestDatabase:
         )
 
         self.create_table(
-            '''CREATE TABLE IF NOT EXISTS imu_data(
+            '''CREATE TABLE IF NOT EXISTS data(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             trial_id INTEGER,
             time REAL,
             torque_setpoint REAL,
-            real_torque REAL,
+            torque_estimate REAL,
             FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
             );'''
         )
@@ -61,9 +61,9 @@ class TorqueReactionTestDatabase:
 
     def add_imu_data(self, trial_id, data):
         """
-            Insert IMU data into imu_data table
+            Insert IMU data into data table
         """
-        sql = ''' INSERT INTO imu_data(trial_id, time, torque_setpoint, real_torque)
+        sql = ''' INSERT INTO data(trial_id, time, torque_setpoint, torque_estimate)
                   VALUES(?, ?, ?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, (trial_id, *data))
@@ -83,7 +83,7 @@ class TorqueReactionTestDatabase:
         """
         Returns all data for a given trial
         """
-        sql = ''' SELECT * FROM imu_data WHERE trial_id=? '''
+        sql = ''' SELECT * FROM data WHERE trial_id=? '''
         cur = self.conn.cursor()
         cur.execute(sql, (trial_id,))
         return cur.fetchall()
@@ -103,6 +103,6 @@ class TorqueReactionTestDatabase:
         """
         # Delete associated imu_data first to maintain integrity
         cur = self.conn.cursor()
-        cur.execute('''DELETE FROM imu_data WHERE trial_id=?''', (trial_id,))
+        cur.execute('''DELETE FROM data WHERE trial_id=?''', (trial_id,))
         cur.execute('''DELETE FROM trials WHERE trial_id=?''', (trial_id,))
         self.conn.commit()

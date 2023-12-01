@@ -7,13 +7,8 @@ import sqlite3
 
 class TorqueReactionTestThreads:
     def __init__(self):
-        self.encoder_position = 0
-        self.encoder_velocity = 0
-
-    #Thread to set motor velocity, CHANGE TO TORQUE CONTROL
-    def set_vel_thread(self, node_id, bus, velocity, running):
-        while running.is_set():
-            bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0d), data=struct.pack('<ff', float(velocity), 0.0), is_extended_id=False))
+        self.torque_setpoint = 0
+        self.torque_estimate = 0
 
     # Function to set torque for a specific O-Drive
     def set_torque_thread(self, node_id, bus, torque_setpoint, initial_time, running):
@@ -45,14 +40,16 @@ class TorqueReactionTestThreads:
             time.sleep(0.001)
 
     #Reports encoder position
-    def get_pos_thread(self, node_id, bus, running):
+    def get_system_torque_thread(self, node_id, bus, running):
         while running.is_set():
             message = bus.recv()  # Blocking call
-            if message.arbitration_id == (node_id << 5 | 0x09):  # Replace with the correct response ID
+            if message.arbitration_id == (node_id << 5 | 0x1c):  # Replace with the correct response ID
                 # Parse the data to get encoder estimates
-                position, velocity = message.data
-                self.encoder_position = position
-                #self.encoder_velocity = velocity
+
+                torque_setpoint, torque_estimate = message.data
+
+                self.torque_setpoint = torque_setpoint
+                self.torque_estimate = torque_estimate
 
             time.sleep(0.001) 
 
@@ -60,11 +57,11 @@ class TorqueReactionTestThreads:
         while running.is_set():
             #Inside this loop, a new connection is created on each iteration
             with sqlite3.connect(db_path) as conn:
-                imuData = [time.time() - initial_time, torque_setpoint, self.encoder_position]
-                sql = ''' INSERT INTO imu_data(trial_id, time, torque_setpoint, encoder_position)
-                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?) '''
+                data = [time.time() - initial_time, self.torque_setpoint, self.torque_estimate]
+                sql = ''' INSERT INTO data(trial_id, time, torque_setpoint, torque_estimate)
+                  VALUES(?, ?, ?, ?) '''
                 cursor = conn.cursor()
-                cursor.execute(sql, (trial_id, *imuData))
+                cursor.execute(sql, (trial_id, *data))
                 conn.commit()
 
                 time.sleep(0.001)

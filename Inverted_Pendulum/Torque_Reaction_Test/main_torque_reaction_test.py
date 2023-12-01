@@ -54,13 +54,13 @@ threads = TorqueReactionTestThreads()
 #Threads
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
 #print_thread = threading.Thread(target=threads.get_pos_thread, args=(node_id, bus, running, ))
-#add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, torque_setpoint, trial_id, running, ))
+add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, trial_id, running, ))
 
 #Initiate threads
 print("\nTest Active")
 set_motor_torque_thread.start()
 #print_thread.start()
-#add_data_to_database.start()
+add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -75,11 +75,9 @@ except KeyboardInterrupt:
 
 finally:
     # Wait for the threads to stop
-
-    #set_velocity_thread.join()
     set_motor_torque_thread.join()
     #print_thread.join()
-    #add_data_to_database.join()
+    add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [Nm]")
