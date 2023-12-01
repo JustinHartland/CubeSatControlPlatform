@@ -33,8 +33,8 @@ def plot_imu_data(data):
     plt.plot(times, torque_estimate, label='Torque Setpoint')
 
     # Setting y-axis limits and adding grid lines for y-axis
-    plt.ylim(-180, 180)
-    plt.yticks(range(-180, 181, 30))  # Setting y-ticks every 30 degrees
+    plt.ylim(-0.5, 0.5)
+    plt.yticks(range(-0.5, 0.5, 0.1))  # Setting y-ticks every 0.1 N/m
 
     # Adding grid lines for x-axis
     x_ticks_interval = (max(times) - min(times)) / 10
@@ -54,8 +54,8 @@ def plot_imu_data(data):
 trial_id = int(input("Please enter the trial ID you want to plot (Enter '0' for the last trial): "))
 
 if trial_id == 0:
-    trial_id = get_last_trial_id("InvPendIMUatabase.db")
+    trial_id = get_last_trial_id("TorqueReactionTestDatabase.db")
 
 # Fetch and plot data for the selected trial
-dataToPlot = fetch_imu_data_for_trial("InvPendIMUatabase.db", trial_id)
+dataToPlot = fetch_imu_data_for_trial("TorqueReactionTestDatabase.db", trial_id)
 plot_imu_data(dataToPlot)
