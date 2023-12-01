@@ -43,7 +43,7 @@ class TorqueReactionTestThreads:
     def get_system_torque_thread(self, node_id, bus, running):
         while running.is_set():
             message = bus.recv()  # Blocking call
-            if message.arbitration_id == (node_id << 5 | 0x1c):  # Replace with the correct response ID
+            if message.arbitration_id == (node_id << 5 | 0x1C):  # Replace with the correct response ID
 
                 # Parse the data to get encoder estimates
                 torque_setpoint, torque_estimate = struct.unpack('<ff', message.data)
