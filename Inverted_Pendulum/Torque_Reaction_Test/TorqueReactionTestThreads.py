@@ -33,8 +33,15 @@ class TorqueReactionTestThreads:
                     arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
                     data=struct.pack('<f', torque_setpoint),
                     is_extended_id=False
-            ))
+                ))
                 
+            if (time.time() - initial_time) >= 10:
+                bus.send(can.Message(
+                    arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
+                    data=struct.pack('<f', 0),
+                    is_extended_id=False
+                ))
+
             time.sleep(0.001)
 
     #Reports encoder position
