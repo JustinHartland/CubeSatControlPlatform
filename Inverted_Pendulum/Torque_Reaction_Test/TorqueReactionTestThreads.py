@@ -44,14 +44,14 @@ class TorqueReactionTestThreads:
         while running.is_set():
             
             #Request encoder position from ODrive
-            #msg = can.Message(arbitration_id=node_id, data=[0x1c], is_extended_id=False)
+            msg = can.Message(arbitration_id=node_id, data=[0x1c], is_extended_id=False)
             #bus.send(msg)
 
             #message = bus.recv()  # Blocking call
             #if message.arbitration_id == (node_id << 5 | 0x1C):  # Replace with the correct response ID
 
                 # Parse the data to get encoder estimates
-            torque_setpoint, torque_estimate = struct.unpack('<ff', (can.Message(arbitration_id=node_id, data=[0x1c], is_extended_id=False)).data)
+            torque_setpoint, torque_estimate = struct.unpack('<ff', (msg).data)
 
             self.torque_setpoint = torque_setpoint
             self.torque_estimate = torque_estimate
