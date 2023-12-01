@@ -45,7 +45,7 @@ torque_setpoint = 0.05
 
 
 #Request encoder position from ODrive
-msg = can.Message(arbitration_id=node_id, data=[0x09], is_extended_id=False)
+msg = can.Message(arbitration_id=node_id, data=[0x1C], is_extended_id=False)
 bus.send(msg)
 
 #setup threads
@@ -54,7 +54,7 @@ threads = TorqueReactionTestThreads()
 #Threads
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
 get_torque_estimate = threading.Thread(target=threads.get_system_torque_thread, args=(node_id, bus, running))
-add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, trial_id, running, ))
+add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, trial_id, running))
 
 #Initiate threads
 print("\nTest Active")
