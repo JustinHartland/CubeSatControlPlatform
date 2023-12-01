@@ -51,6 +51,8 @@ class TorqueReactionTestThreads:
                 self.torque_setpoint = torque_setpoint
                 self.torque_estimate = torque_estimate
 
+                print(self.torque_setpoint)
+
             time.sleep(0.001) 
 
     def add_data_to_database(self, db_path, initial_time, trial_id, running):
