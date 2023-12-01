@@ -44,7 +44,7 @@ class TorqueReactionTestThreads:
         while running.is_set():
             
             #Request encoder position from ODrive
-            msg = can.Message(arbitration_id=node_id, data=[0x1c], is_extended_id=False)
+            msg = can.Message(arbitration_id=node_id, data=[0x01c], is_extended_id=False)
             bus.send(msg)
 
             message = bus.recv()  # Blocking call
