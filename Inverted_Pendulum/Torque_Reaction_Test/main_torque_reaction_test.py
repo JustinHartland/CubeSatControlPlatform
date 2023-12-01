@@ -45,8 +45,8 @@ torque_setpoint = 0.05
 
 
 #Request encoder position from ODrive
-#msg = can.Message(arbitration_id=node_id, data=[0x1C], is_extended_id=False)
-#bus.send(msg)
+msg = can.Message(arbitration_id=node_id, data=[0x1C], is_extended_id=False)
+bus.send(msg)
 
 #setup threads
 threads = TorqueReactionTestThreads()

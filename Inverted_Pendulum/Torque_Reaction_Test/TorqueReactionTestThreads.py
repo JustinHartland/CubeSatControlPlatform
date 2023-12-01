@@ -42,9 +42,6 @@ class TorqueReactionTestThreads:
     #Reports encoder position
     def get_system_torque_thread(self, node_id, bus, running):
         while running.is_set():
-            #Request encoder position from ODrive
-            msg = can.Message(arbitration_id=node_id, data=[0x1C], is_extended_id=False)
-            bus.send(msg)
 
             message = bus.recv()  # Blocking call
             if message.arbitration_id == (node_id << 5 | 0x1C):  # Replace with the correct response ID
