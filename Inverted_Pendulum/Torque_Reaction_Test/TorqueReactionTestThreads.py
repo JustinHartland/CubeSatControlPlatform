@@ -53,7 +53,7 @@ class TorqueReactionTestThreads:
 
             time.sleep(0.001) 
 
-    def add_data_to_database(self, db_path, initial_time, torque_setpoint, trial_id, running):
+    def add_data_to_database(self, db_path, initial_time, trial_id, running):
         while running.is_set():
             #Inside this loop, a new connection is created on each iteration
             with sqlite3.connect(db_path) as conn:
