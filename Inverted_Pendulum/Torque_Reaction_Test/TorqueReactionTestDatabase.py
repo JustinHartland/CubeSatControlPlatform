@@ -19,7 +19,7 @@ class TorqueReactionTestDatabase:
             trial_id INTEGER,
             time REAL,
             torque_setpoint REAL,
-            encoder_position REAL,
+            real_torque REAL,
             FOREIGN KEY (trial_id) REFERENCES trials (trial_id)
             );'''
         )
@@ -63,7 +63,7 @@ class TorqueReactionTestDatabase:
         """
             Insert IMU data into imu_data table
         """
-        sql = ''' INSERT INTO imu_data(trial_id, time, torque_setpoint, encoder_position)
+        sql = ''' INSERT INTO imu_data(trial_id, time, torque_setpoint, real_torque)
                   VALUES(?, ?, ?, ?) '''
         cur = self.conn.cursor()
         cur.execute(sql, (trial_id, *data))

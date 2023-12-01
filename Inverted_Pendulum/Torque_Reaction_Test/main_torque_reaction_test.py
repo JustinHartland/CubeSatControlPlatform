@@ -41,8 +41,8 @@ for msg in bus:
 #Global variables
 odrive_error_detected = False
 initialTime = time.time()
-torque_setpoint = 0.5
-velocity_setpoint = 5
+torque_setpoint = 0.05
+
 
 #Request encoder position from ODrive
 msg = can.Message(arbitration_id=node_id, data=[0x09], is_extended_id=False)
@@ -52,17 +52,15 @@ bus.send(msg)
 threads = TorqueReactionTestThreads()
 
 #Threads
-#set_velocity_thread = threading.Thread(target = threads.set_torque_thread, args=(node_id, bus, velocity_setpoint, running))
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
-print_thread = threading.Thread(target=threads.get_pos_thread, args=(node_id, bus, running, ))
-add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, torque_setpoint, trial_id, running, ))
+#print_thread = threading.Thread(target=threads.get_pos_thread, args=(node_id, bus, running, ))
+#add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, torque_setpoint, trial_id, running, ))
 
 #Initiate threads
 print("\nTest Active")
-#set_velocity_thread.start()
 set_motor_torque_thread.start()
-print_thread.start()
-add_data_to_database.start()
+#print_thread.start()
+#add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -80,8 +78,8 @@ finally:
 
     #set_velocity_thread.join()
     set_motor_torque_thread.join()
-    print_thread.join()
-    add_data_to_database.join()
+    #print_thread.join()
+    #add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [Nm]")
