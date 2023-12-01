@@ -43,20 +43,19 @@ class TorqueReactionTestThreads:
     def get_system_torque_thread(self, node_id, bus, running):
         while running.is_set():
             
-            #Request encoder position from ODrive
-            msg = can.Message(arbitration_id=node_id, data=[0x01c], is_extended_id=False)
-            bus.send(msg)
+            start_time = time.time()
+            while (time.time() - start_time) < 1:
+                msg = bus.recv(timeout = 1 - (time.time() - start_time))  # Adjust timeout for recv
+                if msg is None:
+                    print("Timeout occurred, no message received.")
+                    break
 
-            message = bus.recv()  # Blocking call
-            #if message.arbitration_id == (node_id << 5 | 0x1C):  # Replace with the correct response ID
-
-                # Parse the data to get encoder estimates
-            torque_setpoint, torque_estimate = struct.unpack('<ff', (message).data)
-
-            self.torque_setpoint = torque_setpoint
-            self.torque_estimate = torque_estimate
-
-            print(self.torque_setpoint)
+                if msg.arbitration_id == (node_id << 5 | 0x1C):  # 0x1C: Get_Torques
+                    torque_target, torque_estimate = struct.unpack('<ff', bytes(msg.data))
+                    print(f"O-Drive {node_id} - Torque Target: {torque_target:.3f} [Nm], Torque Estimate: {torque_estimate:.3f} [Nm]")
+                    break
+            else:
+                print(f"No torque message received for O-Drive {node_id} within the timeout period.")
 
             time.sleep(0.001) 
 
