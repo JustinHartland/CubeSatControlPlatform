@@ -37,6 +37,8 @@ class TorqueReactionTestThreads:
                     is_extended_id=False
                 ))
 
+            print('hellO')
+
             time.sleep(0.001)
 
     #Reports encoder position
@@ -44,8 +46,8 @@ class TorqueReactionTestThreads:
         while running.is_set():
             message = bus.recv()  # Blocking call
             if message.arbitration_id == (node_id << 5 | 0x1c):  # Replace with the correct response ID
-                # Parse the data to get encoder estimates
 
+                # Parse the data to get encoder estimates
                 torque_setpoint, torque_estimate = message.data
 
                 self.torque_setpoint = torque_setpoint
