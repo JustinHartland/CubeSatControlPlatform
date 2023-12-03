@@ -65,6 +65,9 @@ class TorqueReactionTestThreads:
             #Inside this loop, a new connection is created on each iteration
             with sqlite3.connect(db_path) as conn:
                 data = [time.time() - initial_time, self.torque_setpoint, self.torque_estimate]
+
+                print('Data added to db: torque_setpoint = %.2f\n' % self.torque_setpoint)
+
                 sql = ''' INSERT INTO data(trial_id, time, torque_setpoint, torque_estimate)
                   VALUES(?, ?, ?, ?) '''
                 cursor = conn.cursor()
