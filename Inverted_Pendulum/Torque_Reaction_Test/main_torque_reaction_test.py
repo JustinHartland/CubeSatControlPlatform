@@ -79,6 +79,7 @@ finally:
 
     for i in range(len(threads.time_array)):
         torque_reaction_test_database.add_data(trial_id, (threads.time_array[i], threads.torque_setpoint_array[i], threads.torque_estimate_array[i]))
+        print('adding to db')
 
     # Shutdown the bus in the finally block to ensure it's always executed
     bus.shutdown()
