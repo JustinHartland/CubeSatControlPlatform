@@ -31,7 +31,7 @@ def plot_imu_data(data):
     plt.figure(figsize=(10, 8))
 
     plt.plot(times, torque_setpoint, label='Torque Setpoint')
-    plt.plot(times, torque_estimate, label='Torque Setpoint')
+    plt.plot(times, torque_estimate, label='Torque Estimate')
 
     # Setting y-axis limits and adding grid lines for y-axis
     plt.ylim(-0.5, 0.5)

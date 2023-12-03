@@ -45,7 +45,7 @@ time.sleep(5)
 #Global variables
 odrive_error_detected = False
 initialTime = time.time()
-torque_setpoint = .4
+torque_setpoint = .35
 
 #setup threads
 threads = TorqueReactionTestThreads()
