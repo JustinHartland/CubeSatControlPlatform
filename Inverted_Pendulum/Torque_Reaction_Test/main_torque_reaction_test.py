@@ -41,21 +41,19 @@ for msg in bus:
 #Global variables
 odrive_error_detected = False
 initialTime = time.time()
-torque_setpoint = 0.05
+torque_setpoint = 0.1
 
 #setup threads
 threads = TorqueReactionTestThreads()
 
 #Threads
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
-get_torque_estimate = threading.Thread(target=threads.get_system_torque_thread, args=(node_id, bus, running))
-add_data_to_database = threading.Thread(target=threads.add_data_to_database, args=('TorqueReactionTestDatabase.db', initialTime, trial_id, running))
+get_torque_estimate = threading.Thread(target=threads.get_system_torque_thread, args=(node_id, bus, initialTime, running))
 
 #Initiate threads
 print("\nTest Active")
 set_motor_torque_thread.start()
 get_torque_estimate.start()
-add_data_to_database.start()
 
 #Shutdown can bus upon ctrl+c
 try:
@@ -72,10 +70,12 @@ finally:
     # Wait for the threads to stop
     set_motor_torque_thread.join()
     get_torque_estimate.join()
-    add_data_to_database.join()
 
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [Nm]")
+
+    for i in range(len(TorqueReactionTestThreads.time)):
+        torque_reaction_test_database.add_data(trial_id, (TorqueReactionTestThreads.time[i], TorqueReactionTestThreads.torque_setpoint[i], TorqueReactionTestThreads.torque_estimate[i]))
 
     # Shutdown the bus in the finally block to ensure it's always executed
     bus.shutdown()

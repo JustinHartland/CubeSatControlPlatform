@@ -10,6 +10,10 @@ class TorqueReactionTestThreads:
         self.torque_setpoint = 0
         self.torque_estimate = 0
 
+        self.torque_setpoint_array = []
+        self.torque_estimate_array = []
+        self.time_array = []
+
     # Function to set torque for a specific O-Drive
     def set_torque_thread(self, node_id, bus, torque_setpoint, initial_time, running):
         while running.is_set():
@@ -40,7 +44,7 @@ class TorqueReactionTestThreads:
             time.sleep(0.001)
 
     #Reports encoder position
-    def get_system_torque_thread(self, node_id, bus, running):
+    def get_system_torque_thread(self, node_id, bus, initial_time, running):
         while running.is_set():
             
             start_time = time.time()
@@ -51,27 +55,15 @@ class TorqueReactionTestThreads:
                     break
 
                 if msg.arbitration_id == (node_id << 5 | 0x1C):  # 0x1C: Get_Torques
-                    self.torque_target, self.torque_estimate = struct.unpack('<ff', bytes(msg.data))
-                    print(f"O-Drive {node_id} - Torque Target: {self.torque_target:.3f} [Nm], Torque Estimate: {self.torque_estimate:.3f} [Nm]")
+                    self.torque_setpoint, self.torque_estimate = struct.unpack('<ff', bytes(msg.data))
+                    print(f"O-Drive {node_id} - Torque Target: {self.torque_setpoint:.3f} [Nm], Torque Estimate: {self.torque_estimate:.3f} [Nm]")
+
+                    self.time_array.append(time.time() - initial_time)
+                    self.torque_setpoint_array.append(self.torque_setpoint)
+                    self.torque_estimate_array.append(self.torque_estimate)
+
                     break
             else:
                 print(f"No torque message received for O-Drive {node_id} within the timeout period.")
 
             time.sleep(0.001) 
-
-
-    def add_data_to_database(self, db_path, initial_time, trial_id, running):
-        while running.is_set():
-            #Inside this loop, a new connection is created on each iteration
-            with sqlite3.connect(db_path) as conn:
-                data = [time.time() - initial_time, self.torque_setpoint, self.torque_estimate]
-
-                print('Data added to db: torque_setpoint = %.2f\n' % self.torque_setpoint)
-
-                sql = ''' INSERT INTO data(trial_id, time, torque_setpoint, torque_estimate)
-                  VALUES(?, ?, ?, ?) '''
-                cursor = conn.cursor()
-                cursor.execute(sql, (trial_id, *data))
-                conn.commit()
-
-                time.sleep(0.001)

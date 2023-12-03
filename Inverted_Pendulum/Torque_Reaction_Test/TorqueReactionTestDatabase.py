@@ -59,7 +59,7 @@ class TorqueReactionTestDatabase:
         self.conn.commit()
         return cur.lastrowid
 
-    def add_imu_data(self, trial_id, data):
+    def add_data(self, trial_id, data):
         """
             Insert IMU data into data table
         """
