@@ -35,7 +35,6 @@ def plot_imu_data(data):
 
     # Setting y-axis limits and adding grid lines for y-axis
     plt.ylim(-0.5, 0.5)
-    #plt.yticks(range(-0.5, 0.5, 10))  # Setting y-ticks every 0.1 N/m
 
     # Adding grid lines for x-axis
     x_ticks_interval = (max(times) - min(times)) / 10
@@ -44,9 +43,9 @@ def plot_imu_data(data):
     # Adding grid
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)
 
-    plt.title("IMU Angles over Time")
+    plt.title("Torque Delay Test")
     plt.xlabel("Time")
-    plt.ylabel("Angle (degrees)")
+    plt.ylabel("Torque (Nm)")
     plt.legend()
 
     plt.show()
