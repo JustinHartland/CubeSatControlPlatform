@@ -77,7 +77,7 @@ finally:
     bus.send(can.Message(arbitration_id=(node_id << 5 | 0x0E), data=struct.pack('<f', 0.0), is_extended_id=False))
     print(f"Successfully set ODrive {node_id} to 0 [Nm]")
 
-    for i in range(len(TorqueReactionTestThreads.time)):
+    for i in range(len(TorqueReactionTestThreads.time_array)):
         torque_reaction_test_database.add_data(trial_id, (TorqueReactionTestThreads.time_array[i], TorqueReactionTestThreads.torque_setpoint_array[i], TorqueReactionTestThreads.torque_estimate_array[i]))
 
     # Shutdown the bus in the finally block to ensure it's always executed
