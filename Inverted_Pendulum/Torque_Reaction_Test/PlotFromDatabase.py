@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import sqlite3
 
+
 def fetch_imu_data_for_trial(database_name, trial_id):
     conn = sqlite3.connect(database_name)
     cur = conn.cursor()
@@ -16,7 +17,7 @@ def get_last_trial_id(database_name):
     conn = sqlite3.connect(database_name)
     cur = conn.cursor()
     
-    cur.execute("SELECT MAX(trial_id) FROM imu_data")
+    cur.execute("SELECT MAX(trial_id) FROM data")
     last_trial_id = cur.fetchone()[0]
     
     conn.close()
@@ -34,7 +35,7 @@ def plot_imu_data(data):
 
     # Setting y-axis limits and adding grid lines for y-axis
     plt.ylim(-0.5, 0.5)
-    plt.yticks(range(-0.5, 0.5, 0.1))  # Setting y-ticks every 0.1 N/m
+    #plt.yticks(range(-0.5, 0.5, 10))  # Setting y-ticks every 0.1 N/m
 
     # Adding grid lines for x-axis
     x_ticks_interval = (max(times) - min(times)) / 10

@@ -27,14 +27,14 @@ class TorqueReactionTestThreads:
                 ))
 
             #Set torque = torque_setpoint after 5 seconds
-            if (time.time() - initial_time) >= 5 and (time.time() - initial_time) < 10:
+            if (time.time() - initial_time) >= 5 and (time.time() - initial_time) < 7:
                 bus.send(can.Message(
                     arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
                     data=struct.pack('<f', torque_setpoint),
                     is_extended_id=False
                 ))
                 
-            if (time.time() - initial_time) >= 10:
+            if (time.time() - initial_time) >= 7:
                 bus.send(can.Message(
                     arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
                     data=struct.pack('<f', 0),
