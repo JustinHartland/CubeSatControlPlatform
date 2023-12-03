@@ -38,6 +38,10 @@ for msg in bus:
         if state == 8:
             break
 
+#Pause before proceeding
+print('Pause for 5 s...')
+time.sleep(5)
+
 #Global variables
 odrive_error_detected = False
 initialTime = time.time()
@@ -45,10 +49,6 @@ torque_setpoint = 0.1
 
 #setup threads
 threads = TorqueReactionTestThreads()
-
-#Pause, then state threads
-print('Pausing for 5 s...')
-time.sleep(5)
 
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
 get_torque_estimate = threading.Thread(target=threads.get_system_torque_thread, args=(node_id, bus, initialTime, running))
@@ -63,7 +63,7 @@ try:
     while True:
         time.sleep(0.001)
 
-except KeyboardInterrupt:
+except KeyboardInterrupt or (time.time() is initialTime) > 15:
     # Signal threads to stop
     running.clear()
 

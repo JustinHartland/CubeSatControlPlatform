@@ -14,8 +14,6 @@ class TorqueReactionTestThreads:
         self.torque_estimate_array = []
         self.time_array = []
 
-        print('time_array created: %.2f' % len(self.time_array))
-
     # Function to set torque for a specific O-Drive
     def set_torque_thread(self, node_id, bus, torque_setpoint, initial_time, running):
         while running.is_set():
