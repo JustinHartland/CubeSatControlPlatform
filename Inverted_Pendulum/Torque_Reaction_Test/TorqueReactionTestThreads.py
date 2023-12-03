@@ -51,8 +51,8 @@ class TorqueReactionTestThreads:
                     break
 
                 if msg.arbitration_id == (node_id << 5 | 0x1C):  # 0x1C: Get_Torques
-                    torque_target, torque_estimate = struct.unpack('<ff', bytes(msg.data))
-                    print(f"O-Drive {node_id} - Torque Target: {torque_target:.3f} [Nm], Torque Estimate: {torque_estimate:.3f} [Nm]")
+                    self.torque_target, self.torque_estimate = struct.unpack('<ff', bytes(msg.data))
+                    print(f"O-Drive {node_id} - Torque Target: {self.torque_target:.3f} [Nm], Torque Estimate: {self.torque_estimate:.3f} [Nm]")
                     break
             else:
                 print(f"No torque message received for O-Drive {node_id} within the timeout period.")
