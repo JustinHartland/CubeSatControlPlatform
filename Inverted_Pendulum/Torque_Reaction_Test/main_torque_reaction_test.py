@@ -46,7 +46,10 @@ torque_setpoint = 0.1
 #setup threads
 threads = TorqueReactionTestThreads()
 
-#Threads
+#Pause, then state threads
+print('Pausing for 5 s...')
+time.sleep(5)
+
 set_motor_torque_thread = threading.Thread(target=threads.set_torque_thread, args=(node_id, bus, torque_setpoint, initialTime, running))
 get_torque_estimate = threading.Thread(target=threads.get_system_torque_thread, args=(node_id, bus, initialTime, running))
 
