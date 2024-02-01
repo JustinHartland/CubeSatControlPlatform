@@ -47,7 +47,7 @@ encoder = as5048b()
 #---------------------------------------------------------------------------------------
 
 #Initialize PID parameters
-p = 1
+p = 0.5
 i = 0
 d = 0
 
@@ -74,7 +74,7 @@ while (time_remaining != 0):
     time.sleep(1)
 
 #Defining threads
-read_angle_thread = threading.Thread(target=encoder.read_angle, args=(running, ))
+read_angle_thread = threading.Thread(target=encoder.read_angle, args=())
 set_motor_torque_thread = threading.Thread(target=pid.set_torque, args=(encoder, node_id, bus, running))
 
 #Initiate threads
