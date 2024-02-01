@@ -30,6 +30,6 @@ class as5048b:
 
         # Full range of the sensor is 0 to 16383
         # Convert to degrees (0 to 360)
-        self.angle = (angle_pre_conversion / 16383.0) * 360.0
+        self.angle = (angle_pre_conversion / 16383.0) * 90.0
 
         return self.angle

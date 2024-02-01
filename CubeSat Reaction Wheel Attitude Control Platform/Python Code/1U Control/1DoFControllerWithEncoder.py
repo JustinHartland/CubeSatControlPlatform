@@ -56,7 +56,7 @@ torque_upper_limit = 0.63
 torque_lower_limit = -0.63
 
 #Initialize angle setpoint
-angle_setpoint = 0
+angle_setpoint = 180
 
 #Create instance of motor_controller
 pid = motor_controller(p, i, d, angle_setpoint,  torque_lower_limit, torque_upper_limit)
