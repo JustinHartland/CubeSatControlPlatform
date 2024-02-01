@@ -32,4 +32,6 @@ class as5048b:
         # Convert to degrees (0 to 360)
         self.angle = (angle_pre_conversion / 16383.0) * 90.0
 
+        print(self.angle)
+
         return self.angle
