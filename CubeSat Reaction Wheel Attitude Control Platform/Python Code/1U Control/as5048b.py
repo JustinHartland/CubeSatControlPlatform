@@ -16,24 +16,23 @@ class as5048b:
         #Sensor angle
         self.angle = 0
 
-    def read_angle(self):
+    def read_angle(self, running):
         '''
         Read angular position of motor shaft
         
         return: angular position of motor shaft
         '''
-        # Read data from the angle register
-        data = self.bus.read_i2c_block_data(self.AS5048A_ADDR, self.AS5048A_ANGLE_REG, 2)
+        while running.is_set():
+            # Read data from the angle register
+            data = self.bus.read_i2c_block_data(self.AS5048A_ADDR, self.AS5048A_ANGLE_REG, 2)
 
-        # Convert the data
-        angle_pre_conversion = data[0] * 256 + data[1]
+            # Convert the data
+            angle_pre_conversion = data[0] * 256 + data[1]
 
-        # Full range of the sensor is 0 to 16383
-        # Convert to degrees (0 to 360)
-        self.angle = (angle_pre_conversion / 16383.0) * 90.0
+            # Full range of the sensor is 0 to 16383
+            # Convert to degrees (0 to 360)
+            self.angle = (angle_pre_conversion / 16383.0) * 90.0
 
-        print(self.angle)
+            print(self.angle)
 
-        time.sleep(0.001)
-        
-        return self.angle
+            time.sleep(0.001)
