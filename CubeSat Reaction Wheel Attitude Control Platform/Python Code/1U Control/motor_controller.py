@@ -5,14 +5,14 @@ import can
 from as5048b import as5048b
 
 class motor_controller:
-    def _init_(self, p, i, d, target_angle, lower_limit, upper_limit):
+    def __init__(self, p, i, d, setpoint, lower_limit, upper_limit):
         #Setting PID constraints
         self.p_parameter = p
         self.i_parameter = i
         self.d_parameter = d
 
         #Setup PID controller
-        self.pid = PID(p, i, d, target_angle)
+        self.pid = PID(p, i, d, setpoint)
         self.pid.output_limits = (lower_limit, upper_limit)
 
     # Function to set torque for a specific O-Drive

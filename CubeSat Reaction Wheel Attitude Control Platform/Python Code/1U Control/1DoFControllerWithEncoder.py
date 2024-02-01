@@ -74,8 +74,8 @@ while (time_remaining != 0):
     time.sleep(1)
 
 #Defining threads
-read_angle_thread = threading.Thread(target=as5048b.read_angle, args=(running, ))
-set_motor_torque_thread = threading.Thread(target=pid.set_torque, args=(as5048b, node_id, bus, running))
+read_angle_thread = threading.Thread(target=encoder.read_angle, args=(running, ))
+set_motor_torque_thread = threading.Thread(target=pid.set_torque, args=(encoder, node_id, bus, running))
 
 #Initiate threads
 print("\nPID Active")
