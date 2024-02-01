@@ -34,4 +34,6 @@ class as5048b:
 
         print(self.angle)
 
+        time.sleep(0.001)
+        
         return self.angle
