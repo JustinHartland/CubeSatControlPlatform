@@ -33,7 +33,13 @@ class as5048b:
         angle_pre_conversion = data[0] * 256 + data[1]
         resting_angle = (angle_pre_conversion / 16383.0) * 45
 
+        print(resting_angle)
+
         self.offset_angle = 180 - resting_angle
+
+        print(self.offset_angle)
+
+        time.sleep(10)
 
 
     def read_angle_synch(self):
