@@ -25,12 +25,8 @@ class as5048b:
         angle_pre_conversion = data[0] * 256 + data[1]
         resting_angle = (angle_pre_conversion / 16383.0) * 45
 
-        print(f"Resting angle: {resting_angle} degrees")
         self.offset_angle = resting_angle  # Here we simply store the resting angle as the offset
 
-        print(f"Offset angle set to: {self.offset_angle} degrees")
-
-        time.sleep(5)
         
     def read_angle_synch(self):
         '''
