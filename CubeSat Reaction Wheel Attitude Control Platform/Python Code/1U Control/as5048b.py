@@ -30,7 +30,8 @@ class as5048b:
 
         print(f"Offset angle set to: {self.offset_angle} degrees")
 
-
+        time.sleep(5)
+        
     def read_angle_synch(self):
         '''
         Read angular position of motor shaft and adjust with offset angle
