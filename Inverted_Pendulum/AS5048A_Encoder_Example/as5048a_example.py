@@ -27,10 +27,10 @@ def read_angle():
 
     # Full range of the sensor is 0 to 16383
     # Convert to degrees (0 to 360)
-    angle = (angle / 16383.0) * 360.0
+    angle = (angle / 16383.0) * 45.0
 
     return angle
-
+    
 #Main script
 try:
     while True:
