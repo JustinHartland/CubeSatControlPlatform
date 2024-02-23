@@ -47,9 +47,9 @@ encoder = as5048b()
 #---------------------------------------------------------------------------------------
 
 #Initialize PID parameters
-p = 0.01
+p = 0.005
 i = 0
-d = 0
+d = 0.0001
 
 #Initialize upper and lower torque output limits
 torque_upper_limit = 0.63

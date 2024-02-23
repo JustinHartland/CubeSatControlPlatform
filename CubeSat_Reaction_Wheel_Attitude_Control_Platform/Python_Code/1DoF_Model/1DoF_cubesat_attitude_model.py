@@ -1,102 +1,137 @@
 import numpy as np
+import os
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-# Initialize the figure and 3D axis
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+def clear_terminal():
+    """Clear the terminal screen."""
+    # Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # Mac and Linux
+    else:
+        os.system('clear')
 
-# Limits and labels for axes
-ax.set_xlim([-2, 2])
-ax.set_ylim([-2, 2])
-ax.set_zlim([-2, 2])
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-5
-# Define the size of the gimbal ring
-ring_size = 1.5
+def get_cube_vertices(center, size):
+    """Generate vertices for a cube centered at 'center' with side length 'size'."""
+    c = np.array(center)
+    s = size / 2
+    return np.array([c + np.array([x, y, z]) for x in [-s, s] for y in [-s, s] for z in [-s, s]])
 
-# Initial setup for the gimbal ring, represented as a line
-gimbal, = ax.plot([], [], [], 'r-', linewidth=2)
-# Add lines for rotational axes
-axis_x = ax.plot([-2, 2], [0, 0], [0, 0], 'k--', label='Gimbal Axis (X)')[0]
-axis_y_prime = ax.plot([], [], [], 'g--', label="Cube's Rotational Axis (Y')")[0]
+def apply_rotation(vertices, rotation_matrix):
+    """Apply a rotation matrix to a set of vertices."""
+    return np.dot(vertices - np.mean(vertices, axis=0), rotation_matrix.T)
 
-# Function to define cube faces
-def cube_faces(vertices):
-    return [[vertices[0], vertices[1], vertices[2], vertices[3]],
-            [vertices[4], vertices[5], vertices[6], vertices[7]], 
-            [vertices[0], vertices[1], vertices[5], vertices[4]], 
-            [vertices[2], vertices[3], vertices[7], vertices[6]], 
-            [vertices[1], vertices[2], vertices[6], vertices[5]],
-            [vertices[4], vertices[7], vertices[3], vertices[0]]]
+def dcm_from_angles(theta, phi):
+    """
+    Generate the Direction Cosine Matrix (DCM) based on the given angles.
 
-# Function to update the positions of the cube, gimbal ring, and rotation axes
-def update(frame):
-    # Remove existing cube faces
-    for col in ax.collections[::-1]:
-        col.remove()
+    Args:
+    - theta (float): Angle in radians, e.g., roll.
+    - phi (float): Angle in radians, e.g., pitch.
 
-    # Gimbal rotation about the X-axis
-    theta = np.radians(frame)
+    Returns:
+    - numpy.ndarray: The DCM matrix.
+    """
+    theta_rad, phi_rad = np.radians(theta), np.radians(phi)
 
-    # Cube rotation about the local Y'-axis (after gimbal rotation)
-    phi = np.radians(frame * 2)
+    Rz = np.array([[np.cos(theta_rad), -np.sin(theta_rad), 0],
+                   [np.sin(theta_rad), np.cos(theta_rad), 0],
+                   [0, 0, 1]])
+    Ry = np.array([[np.cos(phi_rad), 0, np.sin(phi_rad)],
+                   [0, 1, 0],
+                   [-np.sin(phi_rad), 0, np.cos(phi_rad)]])
+    return np.dot(Rz, Ry)
 
-    # Rotation matrix for the gimbal ring about the X axis
-    R_gimbal = np.array([[1, 0, 0],
-                         [0, np.cos(theta), -np.sin(theta)],
-                         [0, np.sin(theta), np.cos(theta)]])
+    """ # Replace this DCM with the correct one for your application
+    dcm = np.array([
+        [cos_theta * cos_phi,   sin_theta * cos_phi,    -sin_phi    ],
+        [-sin_theta,            cos_theta,              0           ],
+        [cos_theta * sin_phi,   sin_theta * sin_phi,    cos_phi     ]
+    ]) """
 
-    # Rotation matrix for the cube about the local Y' axis
-    R_cube_local_y = np.array([[np.cos(phi), 0, np.sin(phi)],
-                               [0, 1, 0],
-                               [-np.sin(phi), 0, np.cos(phi)]])
 
-    # Combined rotation
-    R_total = np.dot(R_cube_local_y, R_gimbal)
+def plot_cube_and_axes(vertices, dcm, size):
+    """Plot a cube given its vertices."""
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
 
-    # Gimbal ring definition
-    gimbal_theta = np.linspace(0, 2 * np.pi, 100)
-    gimbal_x = ring_size * np.cos(gimbal_theta)
-    gimbal_y = ring_size * np.sin(gimbal_theta)
-    gimbal_z = np.zeros_like(gimbal_theta)
-    gimbal_points = np.vstack([gimbal_x, gimbal_y, gimbal_z])
-    rotated_gimbal_points = np.dot(R_gimbal, gimbal_points)
+    # List of sides' polygons
+    verts = [[vertices[0], vertices[1], vertices[3], vertices[2]],
+             [vertices[4], vertices[5], vertices[7], vertices[6]], 
+             [vertices[0], vertices[1], vertices[5], vertices[4]], 
+             [vertices[2], vertices[3], vertices[7], vertices[6]], 
+             [vertices[1], vertices[3], vertices[7], vertices[5]], 
+             [vertices[0], vertices[2], vertices[6], vertices[4]]]
+    ax.add_collection3d(Poly3DCollection(verts, facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25))
 
-    # Update gimbal ring line
-    gimbal.set_data(rotated_gimbal_points[0, :], rotated_gimbal_points[1, :])
-    gimbal.set_3d_properties(rotated_gimbal_points[2, :])
+    # Inertial frame (global axes)
+    axes_length = 1.5 * size  # Length of the axes
+    axes_vectors = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])  # X, Y, Z
+    axes_colors = ['r', 'g', 'b']  # Red for X, Green for Y, Blue for Z
 
-    # Update the cube's local Y' axis representation
-    y_prime_start = np.dot(R_gimbal, [0, -2, 0])
-    y_prime_end = np.dot(R_gimbal, [0, 2, 0])
-    axis_y_prime.set_data([y_prime_start[0], y_prime_end[0]], [y_prime_start[1], y_prime_end[1]])
-    axis_y_prime.set_3d_properties([y_prime_start[2], y_prime_end[2]])
+    for axis, color in zip(axes_vectors, axes_colors):
+        start_point = np.zeros(3)
+        end_point = axis * axes_length
+        ax.quiver(start_point[0], start_point[1], start_point[2], 
+                end_point[0], end_point[1], end_point[2], 
+                color=color, arrow_length_ratio=0.05)
+        
+    # Plot local axes of the cube
+    axes_length = 1.5 * size/2
+    local_axes = np.array([[axes_length, 0, 0], [0, axes_length, 0], [0, 0, axes_length]])
+    rotated_axes = np.dot(local_axes, dcm.T)
+    origin = np.mean(vertices, axis=0)
+    for i, color in zip(range(3), ['magenta', 'limegreen', 'cyan']):  # RGB for XYZ axes
+        ax.quiver(origin[0], origin[1], origin[2], 
+                  rotated_axes[i, 0], rotated_axes[i, 1], rotated_axes[i, 2], 
+                  color=color, arrow_length_ratio=0.05)
+        
+    # Set the view angle for a different perspective
+    ax.view_init(elev=20, azim=40)
+        
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.auto_scale_xyz([-1, 1], [-1, 1], [-1, 1])
+    plt.show()
 
-    # Define cube vertices and apply total rotation
-    cube_size = 0.5
-    cube_vertices = np.array([[-cube_size, -cube_size, -cube_size],
-                              [cube_size, -cube_size, -cube_size],
-                              [cube_size, cube_size, -cube_size],
-                              [-cube_size, cube_size, -cube_size],
-                              [-cube_size, -cube_size, cube_size],
-                              [cube_size, -cube_size, cube_size],
-                              [cube_size, cube_size, cube_size],
-                              [-cube_size, cube_size, cube_size]])
-    rotated_cube_vertices = np.dot(R_total, cube_vertices.T).T
+def main():
+    # Clear the terminal screen
+    clear_terminal()
 
-    # Define and draw cube faces
-    faces = cube_faces(rotated_cube_vertices)
-    cube_poly = Poly3DCollection(faces, facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25)
-    ax.add_collection3d(cube_poly)
+    # User input
+    theta_user = input("Theta: ")
+    phi_user = input("Phi: ")
 
-    return gimbal, axis_x, axis_y_prime,
+    theta_float = float(theta_user)
+    phi_float = float(phi_user)
 
-# Create the animation
-ani = FuncAnimation(fig, update, frames=np.arange(0, 360, 2), blit=False, interval=50)
+    # Get the DCM
+    dcm = dcm_from_angles(theta_float, phi_float)
 
-# Show the plot
-plt.show()
+    print("Direction Cosine Matrix (DCM):")
+    print(dcm)
+
+    # Example usage: converting a vector in the body frame to the inertial frame
+    vector_body_frame = np.array([1, 0, 0])  # Example vector
+    vector_inertial_frame = dcm.dot(vector_body_frame)
+
+    print("Vector in body frame:", vector_body_frame)
+    print("Vector in inertial frame:", vector_inertial_frame)
+
+    # Plotting new orientation
+
+    # Parameters
+    center = [0, 0, 0]  # Center of the cube
+    size = 1            # Side length of the cube
+
+    # Generate cube vertices and apply rotations
+    vertices = get_cube_vertices(center, size)
+    rotated_vertices = apply_rotation(vertices, dcm)
+
+    # Plot the rotated cube
+    plot_cube_and_axes(rotated_vertices, dcm, 1)
+
+if __name__ == "__main__":
+    main()

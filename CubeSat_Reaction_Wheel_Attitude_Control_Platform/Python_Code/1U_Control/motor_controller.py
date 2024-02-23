@@ -19,6 +19,10 @@ class motor_controller:
     def set_torque(self, encoder_obj, node_id, bus, running):
         while running.is_set():
             torque = self.pid(encoder_obj.angle)
+
+            if encoder_obj.angle < 5:
+                torque = 0
+                
             bus.send(can.Message(
                 arbitration_id=(node_id << 5 | 0x0E),  # 0x0E: Set_Input_Torque
                 data=struct.pack('<f', torque),
