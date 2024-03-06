@@ -35,13 +35,13 @@ def dcm_from_angles(theta, phi):
     """
     theta_rad, phi_rad = np.radians(theta), np.radians(phi)
 
-    Rz = np.array([[np.cos(theta_rad), -np.sin(theta_rad), 0],
+    R_3 = np.array([[np.cos(theta_rad), -np.sin(theta_rad), 0],
                    [np.sin(theta_rad), np.cos(theta_rad), 0],
                    [0, 0, 1]])
-    Ry = np.array([[np.cos(phi_rad), 0, np.sin(phi_rad)],
-                   [0, 1, 0],
-                   [-np.sin(phi_rad), 0, np.cos(phi_rad)]])
-    return np.dot(Rz, Ry)
+    R_1 = np.array([[1,  0          ,    0           ],
+                    [0,  np.cos(phi_rad),    -np.sin(phi_rad)],
+                    [0,  np.sin(phi_rad),    np.cos(phi_rad) ]])
+    return np.dot(R_3, R_1)
 
     """ # Replace this DCM with the correct one for your application
     dcm = np.array([
