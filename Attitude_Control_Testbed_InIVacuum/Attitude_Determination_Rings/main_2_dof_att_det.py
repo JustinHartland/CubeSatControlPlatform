@@ -62,9 +62,8 @@ def main():
             print(f"Local X: {[encoder_local_x.angle]} deg")
             print() """
         
-        print(f"Local Z: {[encoder_local_z.angle]} deg")
-        print(f"Local X: {[encoder_local_x.angle]} deg")
-
+        print(f"Z: {[encoder_local_z.angle]} deg, X: {[encoder_local_x.angle]} deg")
+        
         #loop_counter += 1  # Increment loop counter
 
         # Pause for a short duration before the next loop iteration to limit the rate of operation.
