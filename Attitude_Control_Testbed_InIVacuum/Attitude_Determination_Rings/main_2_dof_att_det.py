@@ -56,15 +56,13 @@ def main():
         # Calculate the body frame axes with respect to the inertial frame based on encoder readings.
         body_axes_inertial = get_body_axes_inertial(theta, phi)
 
-        """ if loop_counter % report_interval == 0:
+        if loop_counter % report_interval == 0:
             print(f"Body Axes Inertial Orientation: X-axis: {body_axes_inertial[0]}, Y-axis: {body_axes_inertial[1]}, Z-axis: {body_axes_inertial[2]}")
             print(f"Local Z: {[encoder_local_z.angle]} deg")
             print(f"Local X: {[encoder_local_x.angle]} deg")
-            print() """
+            print()
         
-        print(f"Z: {[encoder_local_z.angle]} deg, X: {[encoder_local_x.angle]} deg")
-        
-        #loop_counter += 1  # Increment loop counter
+        loop_counter += 1  # Increment loop counter
 
         # Pause for a short duration before the next loop iteration to limit the rate of operation.
         time.sleep(0.05)
