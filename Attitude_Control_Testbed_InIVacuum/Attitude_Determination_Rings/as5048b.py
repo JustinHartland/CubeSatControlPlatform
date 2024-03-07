@@ -29,7 +29,7 @@ class as5048b:
 
     def get_angle(self):
         # Read data from the angle register
-        data = self.bus.read_i2c_block_data(self.AS5048A_ADDR, self.AS5048A_ANGLE_REG, 2)
+        data = self.bus.read_i2c_block_data(self.AS5048B_ADDR, self.AS5048B_ANGLE_REG, 2)
 
         # Convert the data
         angle_pre_conversion = data[0] * 256 + data[1]

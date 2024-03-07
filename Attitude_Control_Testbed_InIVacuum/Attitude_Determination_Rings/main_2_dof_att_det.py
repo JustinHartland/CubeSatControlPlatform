@@ -42,7 +42,7 @@ def main():
     encoder_local_z = as5048b(address=0x10) # Encoder for local Z-axis
     encoder_local_z.calibrate_encoder()     # Calibrate the encoder
 
-    encoder_local_x = as5048b(address=0x10) # Encoder for local X-axis
+    encoder_local_x = as5048b(address=0x40) # Encoder for local X-axis
     encoder_local_x.calibrate_encoder()     # Calibrate the encoder
 
     report_interval = 100  # How many loops to wait before reporting again.
@@ -58,6 +58,9 @@ def main():
 
         if loop_counter % report_interval == 0:
             print(f"Body Axes Inertial Orientation: X-axis: {body_axes_inertial[0]}, Y-axis: {body_axes_inertial[1]}, Z-axis: {body_axes_inertial[2]}")
+            print(f"Local Z: {[encoder_local_z.angle]} deg")
+            print(f"Local X: {[encoder_local_x.angle]} deg")
+            print()
 
         loop_counter += 1  # Increment loop counter
 
