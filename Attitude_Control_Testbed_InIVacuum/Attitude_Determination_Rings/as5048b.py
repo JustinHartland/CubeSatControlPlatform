@@ -38,6 +38,8 @@ class as5048b:
         # Convert to degrees (0 to 360)
         self.angle = (angle_pre_conversion / 16383.0) * 90.0
 
+        return self.angle
+
  # Example run
 """ def main():
     # Create two instances of as5048b for each encoder
