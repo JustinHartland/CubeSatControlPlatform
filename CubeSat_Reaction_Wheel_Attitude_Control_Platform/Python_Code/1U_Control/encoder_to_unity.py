@@ -7,6 +7,7 @@ host, port = "192.168.1.12", 25001
 
 # Create instance of as5048b class
 encoder = as5048b()
+print("encoder instance")
 
 # Initialize TCP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
