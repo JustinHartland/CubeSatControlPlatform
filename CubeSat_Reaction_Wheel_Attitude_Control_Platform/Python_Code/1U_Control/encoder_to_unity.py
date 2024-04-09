@@ -7,7 +7,7 @@ host, port = "192.168.1.12", 25001
 
 # Create instance of as5048b class
 encoder = as5048b()
-print("encoder instance")
+print("Encoder object instantiated")
 
 # Initialize TCP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,7 +18,8 @@ print('Socket Connected')
 data_template = "{}, {}, {}"
 
 try:
-    print('Try')
+    print('Try reached')
+    
     # Continually read angular position data
     angle = 0
 
