@@ -17,7 +17,7 @@ def read_raw_angle():
 
 # Function to convert raw angle to degrees
 def raw_to_degrees(raw_angle):
-    return (raw_angle / 16383.0) * 360.0
+    return (raw_angle / 16383.0) * 90
 
 # Initialize the last angle and the total rotations
 last_angle_raw = read_raw_angle()
