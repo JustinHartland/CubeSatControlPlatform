@@ -29,9 +29,11 @@ try:
 
         data = data_template.format(0, 0, angle)
         
+        print(data)
+
         sock.sendall(data.encode("utf-8"))
-        response = sock.recv(1024).decode("utf-8")
-        print (response)
+        #response = sock.recv(1024).decode("utf-8")
+        #print (response)
 
         time.sleep(0.05)
 
