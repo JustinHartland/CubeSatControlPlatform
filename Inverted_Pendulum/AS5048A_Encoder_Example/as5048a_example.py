@@ -27,7 +27,7 @@ def read_angle():
 
     # Full range of the sensor is 0 to 16383
     # Convert to degrees (0 to 360)
-    angle = (angle / 16383.0) * 45.0
+    angle = (angle / 16383.0) * 90.0
 
     return angle
     
@@ -36,7 +36,7 @@ try:
     while True:
         angle = read_angle()
         print("Angle: {:.2f} degrees".format(angle))
-        time.sleep(0.5)
+        time.sleep(0.05)
 
 except KeyboardInterrupt:
     print("Measurement stopped by user")
