@@ -1,5 +1,5 @@
 # Import libraries
-import as5048b
+from as5048b import as5048b
 import time
 import socket
 
