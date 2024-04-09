@@ -24,7 +24,9 @@ try:
     angle = 0
 
     while (True):
-        angle = encoder.read_angle()
+        encoder.read_angle()
+        angle = encoder.angle
+        
         # Immediately check the value of angle after reading it
         print("Read angle:", angle)
 
