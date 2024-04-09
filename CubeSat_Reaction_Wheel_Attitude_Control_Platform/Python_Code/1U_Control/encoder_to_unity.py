@@ -30,6 +30,7 @@ try:
         # Check if angle is None before proceeding
         if angle is None:
             print("Error: angle is None")
+            data = 0
             # Handle the error appropriately, maybe continue to the next iteration or exit
         else:
             data = "0, 0, {:.2f}".format(angle)
