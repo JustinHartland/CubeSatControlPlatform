@@ -28,7 +28,7 @@ try:
         print(angle)
 
         # Format the string with the angle value
-        data = "0, 0, {:.2f}".format(angle)
+        data = f"0, 0, {angle:.2f}"
         print(data)
 
     
