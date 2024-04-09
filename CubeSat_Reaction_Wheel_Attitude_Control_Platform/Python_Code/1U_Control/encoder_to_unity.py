@@ -30,13 +30,13 @@ try:
         # Check if angle is None before proceeding
         if angle is None:
             print("Error: angle is None")
-            data = 0
-            # Handle the error appropriately, maybe continue to the next iteration or exit
+            # Consider sending a specific error message or skipping the sending step
+            data = "0, 0, 0"  # Use a placeholder error message
         else:
-            data = (f"0, 0, {angle:.2f}")
-            print(data)
+            data = f"0, 0, {angle:.2f}"
 
-    
+        print(data)
+        
         sock.sendall(data.encode("utf-8"))
         #response = sock.recv(1024).decode("utf-8")
         #print (response)
