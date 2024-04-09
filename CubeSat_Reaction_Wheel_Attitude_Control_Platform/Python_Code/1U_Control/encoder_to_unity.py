@@ -11,6 +11,7 @@ encoder = as5048b()
 # Initialize TCP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((host, port))
+print('Socket Connected')
 
 # Data string template
 data_template = "{}, {}, {}"
