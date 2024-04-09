@@ -28,4 +28,5 @@ class as5048b:
         angle_pre_conversion = data[0] * 256 + data[1]
         self.angle = (angle_pre_conversion / 16383.0) * 45.0
 
-        print(self.angle)
+        #print(self.angle)
+        return self.angle

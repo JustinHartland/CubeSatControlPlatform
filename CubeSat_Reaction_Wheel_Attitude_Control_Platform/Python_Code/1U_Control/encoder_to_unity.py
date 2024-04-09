@@ -31,7 +31,7 @@ try:
         # Ensure that the check for None happens right after reading the angle
         if angle is None:
             print("Error: angle is None")
-            data = "0, 0, error"  # Using an error message instead of a numerical value
+            data = "0, 0, 0"  # Using an error message instead of a numerical value
         else:
             data = f"0, 0, {angle:.2f}"
             print(data)  # Print the data only if angle is not None
