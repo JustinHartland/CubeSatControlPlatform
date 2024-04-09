@@ -27,7 +27,7 @@ try:
         angle = encoder.read_angle()
         print(angle)
 
-        data = "0, 0, " + angle
+        data = "0, 0, " + str(angle)
         print(data)
 
         datastr = str(data)
