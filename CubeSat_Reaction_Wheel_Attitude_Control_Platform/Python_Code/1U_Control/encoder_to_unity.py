@@ -25,17 +25,16 @@ try:
 
     while (True):
         angle = encoder.read_angle()
-        print(angle)
+        # Immediately check the value of angle after reading it
+        print("Read angle:", angle)
 
-        # Check if angle is None before proceeding
+        # Ensure that the check for None happens right after reading the angle
         if angle is None:
             print("Error: angle is None")
-            # Consider sending a specific error message or skipping the sending step
-            data = "0, 0, 0"  # Use a placeholder error message
+            data = "0, 0, error"  # Using an error message instead of a numerical value
         else:
             data = f"0, 0, {angle:.2f}"
-
-        print(data)
+            print(data)  # Print the data only if angle is not None
         
         sock.sendall(data.encode("utf-8"))
         #response = sock.recv(1024).decode("utf-8")
