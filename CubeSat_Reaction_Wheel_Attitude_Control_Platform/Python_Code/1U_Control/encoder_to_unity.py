@@ -27,9 +27,13 @@ try:
         angle = encoder.read_angle()
         print(angle)
 
-        # Format the string with the angle value
-        data = f"0, 0, {angle:.2f}"
-        print(data)
+        # Check if angle is None before proceeding
+        if angle is None:
+            print("Error: angle is None")
+            # Handle the error appropriately, maybe continue to the next iteration or exit
+        else:
+            data = "0, 0, {:.2f}".format(angle)
+            print(data)
 
     
         sock.sendall(data.encode("utf-8"))
