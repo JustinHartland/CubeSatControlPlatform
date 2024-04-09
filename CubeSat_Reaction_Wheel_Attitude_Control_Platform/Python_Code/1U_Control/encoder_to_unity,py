@@ -1,0 +1,40 @@
+# Import libraries
+import as5048b
+import time
+import socket
+import struct
+
+host, port = "127.0.0.1", 25001
+
+# Create instance of as5048b class
+encoder = as5048b()
+
+# Initialize TCP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((host, port))
+
+try:
+    # Continually read angular position data
+    angle = 0
+
+    #Connect to server
+    sock.connect((host, port))
+
+    while (True):
+        angle = encoder.read_angle()
+        print(angle)
+
+        # Pack the angle as a float and send it
+        sock.sendall(struct.pack('f', angle))
+
+        # Optionally receive a response from the server, unsure if "utf-8" will work here
+        #response = sock.recv(1024).decode("utf-8")
+        #print(response)
+
+        time.sleep(0.05)
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    sock.close()
