@@ -33,7 +33,7 @@ try:
             data = 0
             # Handle the error appropriately, maybe continue to the next iteration or exit
         else:
-            data = "0, 0, {:.2f}".format(angle)
+            data = (f"0, 0, {angle:.2f}")
             print(data)
 
     
