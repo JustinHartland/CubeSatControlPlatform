@@ -16,6 +16,7 @@ sock.connect((host, port))
 data_template = "{}, {}, {}"
 
 try:
+    print('Try')
     # Continually read angular position data
     angle = 0
 
