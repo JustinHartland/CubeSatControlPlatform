@@ -27,11 +27,10 @@ try:
         angle = encoder.read_angle()
         print(angle)
 
-        data = "0, 0, " + str(angle)
+        # Format the string with the angle value
+        data = "0, 0, {:.2f}".format(angle)
         print(data)
 
-        datastr = str(data)
-        print(datastr)
     
         sock.sendall(data.encode("utf-8"))
         #response = sock.recv(1024).decode("utf-8")
