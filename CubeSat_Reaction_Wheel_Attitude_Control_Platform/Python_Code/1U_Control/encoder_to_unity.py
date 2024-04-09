@@ -28,7 +28,7 @@ try:
         angle = encoder.angle
         
         # Immediately check the value of angle after reading it
-        print("Read angle:", angle)
+        #print("Read angle:", angle)
 
         # Ensure that the check for None happens right after reading the angle
         if angle is None:
