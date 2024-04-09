@@ -27,10 +27,12 @@ try:
         angle = encoder.read_angle()
         print(angle)
 
-        data = data_template.format(0, 0, angle)
-        
+        data = (0, 0, angle)
         print(data)
 
+        datastr = str(data)
+        print(datastr)
+    
         sock.sendall(data.encode("utf-8"))
         #response = sock.recv(1024).decode("utf-8")
         #print (response)
