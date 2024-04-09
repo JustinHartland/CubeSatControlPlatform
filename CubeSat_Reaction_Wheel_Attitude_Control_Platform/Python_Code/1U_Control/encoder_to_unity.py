@@ -19,19 +19,16 @@ data_template = "{}, {}, {}"
 
 try:
     print('Try reached')
-    
+
     # Continually read angular position data
     angle = 0
-
-    #Connect to server
-    sock.connect((host, port))
 
     while (True):
         angle = encoder.read_angle()
         print(angle)
 
         data = data_template.format(0, 0, angle)
-
+        
         sock.sendall(data.encode("utf-8"))
         response = sock.recv(1024).decode("utf-8")
         print (response)
