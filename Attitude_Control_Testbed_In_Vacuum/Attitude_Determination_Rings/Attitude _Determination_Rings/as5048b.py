@@ -8,17 +8,7 @@ class as5048b:
         self.bus = smbus.SMBus(1)
         self.AS5048B_ADDR = address # AS5048B default address
         self.AS5048B_ANGLE_REG = 0xFE # AS5048B Register
-        self.offset_angle = 0 #Offset angle to calibrate
         self.expected_zero_angle = expected_zero_angle
-
-    def calibrate_encoder(self):
-        #Determine offset
-        data = self.bus.read_i2c_block_data(self.AS5048B_ADDR, self.AS5048B_ANGLE_REG, 2)
-        angle_pre_conversion = data[0] * 256 + data[1]
-
-        current_angle = (angle_pre_conversion / 16383.0) * 90
-
-        self.offset_angle = self.expected_zero_angle - current_angle  # Here we simply store the resting angle as the offset
 
     def get_angle(self):
         # Read data from the angle register
