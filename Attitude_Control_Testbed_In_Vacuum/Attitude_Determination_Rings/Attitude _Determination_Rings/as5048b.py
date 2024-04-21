@@ -35,7 +35,7 @@ class as5048b:
         # Adjust if negative due to negative offset
         corrected_angle = corrected_angle if corrected_angle >= 0 else corrected_angle + 360
 
-        return measured_angle
+        return corrected_angle
 
  # Example run
 """ def main():

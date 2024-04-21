@@ -41,10 +41,10 @@ def get_body_axes_inertial(phi, theta, psi):
 
 def main():
     # Initialize encoder instances for local Z1, X, and Z2 axes. These will read angular positions.
-    encoder_local_z1 = as5048b(0, address=0x41)  # Encoder for the first local Z-axis (yaw)
+    encoder_local_z1 = as5048b(282.78, address=0x41)  # Encoder for the first local Z-axis (yaw)
     encoder_local_z1.calibrate_encoder()      # Calibrate the encoder
 
-    encoder_local_x = as5048b(0, address=0x40)   # Encoder for local X-axis (roll)
+    encoder_local_x = as5048b(66.42, address=0x40)   # Encoder for local X-axis (roll)
     encoder_local_x.calibrate_encoder()       # Calibrate the encoder
 
     encoder_local_z2 = as5048b(0, address=0x42)  # Encoder for the second local Z-axis (yaw)
