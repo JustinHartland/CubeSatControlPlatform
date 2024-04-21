@@ -30,7 +30,7 @@ class as5048b:
         # Full range of the sensor is 0 to 16383
         # Convert to degrees (0 to 360)
         measured_angle = (angle_pre_conversion / 16383.0) * 90.0
-        corrected_angle = (measured_angle - self.offset_angle) % 360
+        corrected_angle = (measured_angle - self.expected_zero_angle) % 360
 
         # Adjust if negative due to negative offset
         corrected_angle = corrected_angle if corrected_angle >= 0 else corrected_angle + 360
