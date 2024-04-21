@@ -50,7 +50,7 @@ def main():
     encoder_local_z2 = as5048b(0, address=0x42)  # Encoder for the second local Z-axis (yaw)
     encoder_local_z2.calibrate_encoder()      # Calibrate the encoder
 
-    report_interval = 50  # How many loops to wait before reporting again.
+    report_interval = 1  # How many loops to wait before reporting again.
     loop_counter = 0  # Counter to keep track of loop iterations.
 
     while(True):
