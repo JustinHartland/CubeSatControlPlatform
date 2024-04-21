@@ -64,8 +64,8 @@ def main():
 
         if loop_counter % report_interval == 0:
             #print(f"Body Axes Inertial Orientation: X-axis: {body_axes_inertial[0]}, Y-axis: {body_axes_inertial[1]}, Z-axis: {body_axes_inertial[2]}")
-            print(f"First Z (Yaw): {phi:.2f} deg, X (Roll): {theta:.2f} deg, Second Z (Yaw): {psi:.2f} deg")
-            print(f"Body Axes Inertial Orientation: X-axis: {[f'{x:.2f}' for x in body_axes_inertial[0]]}, Y-axis: {[f'{y:.2f}' for y in body_axes_inertial[1]]}, Z-axis: {[f'{z:.2f}' for z in body_axes_inertial[2]]}")
+            print(f"First Z (Yaw): {phi:.2f} deg, X (Roll): {theta:.2f} deg, Second Z (Yaw): {psi:.2f} deg\n")
+            #print(f"Body Axes Inertial Orientation: X-axis: {[f'{x:.2f}' for x in body_axes_inertial[0]]}, Y-axis: {[f'{y:.2f}' for y in body_axes_inertial[1]]}, Z-axis: {[f'{z:.2f}' for z in body_axes_inertial[2]]}")
 
         
         loop_counter += 1  # Increment loop counter
