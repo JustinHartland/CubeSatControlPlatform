@@ -4,27 +4,21 @@ import smbus
 import time
 
 class as5048b:
-    def __init__(self, address):
+    def __init__(self, expected_zero_angle, address):
         self.bus = smbus.SMBus(1)
         self.AS5048B_ADDR = address # AS5048B default address
         self.AS5048B_ANGLE_REG = 0xFE # AS5048B Register
-        self.angle = 0 #Sensor angle
         self.offset_angle = 0 #Offset angle to calibrate
+        self.expected_zero_angle = expected_zero_angle
 
     def calibrate_encoder(self):
-        time_remaining = 3
-
-        while (time_remaining != 0):
-            print(f"{time_remaining} s")
-            time_remaining = time_remaining - 1
-            time.sleep(1)
-
         #Determine offset
         data = self.bus.read_i2c_block_data(self.AS5048B_ADDR, self.AS5048B_ANGLE_REG, 2)
         angle_pre_conversion = data[0] * 256 + data[1]
-        resting_angle = (angle_pre_conversion / 16383.0) * 90
 
-        self.offset_angle = resting_angle  # Here we simply store the resting angle as the offset
+        current_angle = (angle_pre_conversion / 16383.0) * 90
+
+        self.offset_angle = self.expected_zero_angle - current_angle  # Here we simply store the resting angle as the offset
 
     def get_angle(self):
         # Read data from the angle register
@@ -35,7 +29,11 @@ class as5048b:
 
         # Full range of the sensor is 0 to 16383
         # Convert to degrees (0 to 360)
-        self.angle = (angle_pre_conversion / 16383.0) * 90.0
+        measured_angle = (angle_pre_conversion / 16383.0) * 90.0
+        corrected_angle = (measured_angle + self.offset_angle) % 360
+
+        # Adjust if negative due to negative offset
+        corrected_angle = corrected_angle if corrected_angle >= 0 else corrected_angle + 360
 
         return self.angle
 
