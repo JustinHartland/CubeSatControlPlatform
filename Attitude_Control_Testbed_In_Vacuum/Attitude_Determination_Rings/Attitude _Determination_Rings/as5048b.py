@@ -12,7 +12,6 @@ class as5048b:
         self.offset_angle = 0 #Offset angle to calibrate
 
     def calibrate_encoder(self):
-        print('Ensure CoM is below pivot\n\nCalibration beginning in:\n\n')
         time_remaining = 3
 
         while (time_remaining != 0):
