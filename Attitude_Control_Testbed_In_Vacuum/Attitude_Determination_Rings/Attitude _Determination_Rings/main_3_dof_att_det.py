@@ -14,9 +14,9 @@ def get_body_axes_inertial(phi, theta, psi):
                       [0, 0, 1]])
 
     # Define the rotation matrix for rotation around the X-axis (roll).
-    R_1 = np.array([1, 0, 0],
+    R_1 = np.array([[1, 0, 0],
                     [0, np.cos(theta), -np.sin(theta)],
-                    [0, np.sin(theta), np.cos(theta)])
+                    [0, np.sin(theta), np.cos(theta)]])
 
     # Define the rotation matrix for the second rotation around the Z-axis (yaw).
     R_3_2 = np.array([[np.cos(psi), -np.sin(psi), 0],
