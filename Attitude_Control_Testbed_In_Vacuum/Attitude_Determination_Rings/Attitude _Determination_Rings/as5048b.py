@@ -18,7 +18,7 @@ class as5048b:
 
         current_angle = (angle_pre_conversion / 16383.0) * 90
 
-        self.offset_angle = self.expected_zero_angle - current_angle  # Here we simply store the resting angle as the offset
+        self.offset_angle = current_angle - self.expected_zero_angle  # Here we simply store the resting angle as the offset
 
     def get_angle(self):
         # Read data from the angle register
